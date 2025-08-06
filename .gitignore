@@ -3,6 +3,9 @@
 application/cache/*
 !application/cache/index.html
 
+# Ignore secure config
+application/config/secure_config.php
+
 application/logs/*
 !application/logs/index.html
 
