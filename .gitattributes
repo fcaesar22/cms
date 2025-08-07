@@ -1,0 +1,17 @@
+# Abaikan folder vendor, node_modules, dan assets/js/vendor misalnya
+/vendor/** linguist-vendored
+/node_modules/** linguist-vendored
+/assets/js/vendor/** linguist-vendored
+/assets/plugins/** linguist-vendored
+
+# Pastikan file PHP dikenali sebagai PHP
+*.php linguist-language=PHP
+
+# Pastikan file HTML dikenali sebagai HTML
+*.html linguist-language=HTML
+
+# Pastikan file CSS dikenali sebagai CSS
+*.css linguist-language=CSS
+
+# Pastikan file JS dikenali sebagai JavaScript
+*.js linguist-language=JavaScript
