@@ -1,0 +1,20 @@
+-- Seed permissions
+INSERT INTO `permissions` (`id`, `name`) VALUES
+(1, 'view_dashboard'),
+(2, 'create_users'),
+(3, 'edit_users'),
+(4, 'delete_users'),
+(5, 'view_roles'),
+(6, 'view_permissions'),
+(7, 'view_menus'),
+(8, 'manage_users'),
+(10, 'view_users'),
+(11, 'create_roles'),
+(12, 'edit_roles'),
+(13, 'delete_roles'),
+(14, 'create_permissions'),
+(15, 'edit_permissions'),
+(16, 'delete_permissions'),
+(17, 'create_menus'),
+(18, 'edit_menus'),
+(19, 'delete_menus');
