@@ -28,6 +28,9 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 016  | 016_create_thumbnail_whatson_table.sql    | Membuat tabel `thumbnail_whatson`        |
 | 017  | 017_create_whatson_table.sql              | Membuat tabel `whatson`                  |
 | 018  | 018_create_whatson_content_table.sql      | Membuat tabel `whatson_content`          |
+| 019  | 019_create_client_app_table.sql           | Membuat tabel `client_app`               |
+| 020  | 020_create_genre_tv_table.sql             | Membuat tabel `genre_tv`                 |
+| 021  | 021_create_tv_channel_table.sql           | Membuat tabel `tv_channel`               |
 
 ---
 
