@@ -9,7 +9,7 @@ class Libadapter {
         $this->CI->load->config('secure_config');
     }
 
-    private static $baseurlimage = 'https://picture.dens.tv/wp/';
+    private static $baseurlimage = 'https://picture.dens.tv/';
 
     public function execurl($toURL, $post) {
         if (stristr($toURL, 'olap')==true) {
