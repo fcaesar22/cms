@@ -404,7 +404,7 @@ class Whatsons extends CI_Controller {
         $_urlimage = array();
 
         //formed array from server
-        $path = 'img/whatson_v2/1280x720/';
+        $path = 'wp/img/whatson_v2/1280x720/';
         $changeDir = 'wp/img/whatson_v2/1280x720/';
         $listimg = $this->libadapter->getImages($path, $changeDir);
         if ($listimg['error'] == 0) {
@@ -419,7 +419,7 @@ class Whatsons extends CI_Controller {
             $urlimage = $this->Whatson_model->getimagelandscape();
             if ($urlimage!=null) {
                 foreach ($urlimage as $key => $value) {
-                    array_push($_urlimage, self::$baseurlimage . 'img/whatson_v2/1280x720/' . basename($value['whatson_image']));
+                    array_push($_urlimage, self::$baseurlimage . $path . basename($value['whatson_image']));
                 }
             }
 
@@ -452,7 +452,7 @@ class Whatsons extends CI_Controller {
         $_urlimage = array();
 
         //formed array from server
-        $path = 'img/whatson_v2/375x375/';
+        $path = 'wp/img/whatson_v2/375x375/';
         $changeDir = 'wp/img/whatson_v2/375x375/';
         $listimg = $this->libadapter->getImages($path, $changeDir);
         if ($listimg['error'] == 0) {
@@ -467,7 +467,7 @@ class Whatsons extends CI_Controller {
             $urlimage = $this->Whatson_model->getimageportrait();
             if ($urlimage!=null) {
                 foreach ($urlimage as $key => $value) {
-                    array_push($_urlimage, self::$baseurlimage . 'img/whatson_v2/375x375/' . basename($value['whatson_image_potrait']));
+                    array_push($_urlimage, self::$baseurlimage . $path . basename($value['whatson_image_potrait']));
                 }
             }
 
