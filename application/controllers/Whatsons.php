@@ -22,8 +22,8 @@ class Whatsons extends CI_Controller {
 
     public function index()
     {
-        $data['title'] = 'What\'s On';
-        $this->load->view('layouts/header');
+        $data['title'] = 'List What\'s On';
+        $this->load->view('layouts/header', $data);
         $this->load->view('layouts/sidebar');
         $this->load->view('whatson/index', $data);
         $this->load->view('layouts/footer');

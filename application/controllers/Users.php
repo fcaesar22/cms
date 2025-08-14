@@ -17,8 +17,8 @@ class Users extends CI_Controller {
 
     public function index()
     {
-        $data['title'] = 'Users';
-        $this->load->view('layouts/header');
+        $data['title'] = 'List Users';
+        $this->load->view('layouts/header', $data);
         $this->load->view('layouts/sidebar');
         $this->load->view('users/index', $data);
         $this->load->view('layouts/footer');
