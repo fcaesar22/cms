@@ -18,7 +18,7 @@ class Roles extends CI_Controller {
     public function index()
     {
         $data['title'] = 'List Roles';
-        $this->load->view('layouts/header');
+        $this->load->view('layouts/header', $data);
         $this->load->view('layouts/sidebar');
         $this->load->view('roles/index', $data);
         $this->load->view('layouts/footer');

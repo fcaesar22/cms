@@ -20,7 +20,7 @@ class Menus extends CI_Controller {
     public function index()
     {
         $data['title'] = 'List Menu';
-        $this->load->view('layouts/header');
+        $this->load->view('layouts/header', $data);
         $this->load->view('layouts/sidebar');
         $this->load->view('menus/index', $data);
         $this->load->view('layouts/footer');

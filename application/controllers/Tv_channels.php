@@ -20,8 +20,8 @@ class Tv_channels extends CI_Controller {
 
     public function index()
     {
-        $data['title'] = 'TV Channels';
-        $this->load->view('layouts/header');
+        $data['title'] = 'List TV Channels';
+        $this->load->view('layouts/header', $data);
         $this->load->view('layouts/sidebar');
         $this->load->view('tv_channels/index', $data);
         $this->load->view('layouts/footer');

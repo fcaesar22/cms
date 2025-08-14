@@ -20,7 +20,7 @@ class Movies extends CI_Controller {
 
     public function index()
     {
-        $data['title'] = 'Movies';
+        $data['title'] = 'List Movies';
         $this->load->view('layouts/header', $data);
         $this->load->view('layouts/sidebar');
         $this->load->view('movies/index', $data);

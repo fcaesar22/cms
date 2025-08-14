@@ -17,8 +17,8 @@ class Permissions extends CI_Controller {
 
     public function index()
     {
-        $data['title'] = 'Permission';
-        $this->load->view('layouts/header');
+        $data['title'] = 'List Permission';
+        $this->load->view('layouts/header', $data);
         $this->load->view('layouts/sidebar');
         $this->load->view('permissions/index', $data);
         $this->load->view('layouts/footer');
