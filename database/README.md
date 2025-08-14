@@ -31,11 +31,12 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 019  | 019_create_client_app_table.sql           | Membuat tabel `client_app`               |
 | 020  | 020_create_genre_tv_table.sql             | Membuat tabel `genre_tv`                 |
 | 021  | 021_create_tv_channel_table.sql           | Membuat tabel `tv_channel`               |
-| 022  | 022_create_mng_code_table.sql             | Membuat tabel `mng_code_table`           |
-| 023  | 023_create_keywords_table.sql             | Membuat tabel `keywords_table`           |
-| 024  | 024_create_movies_table.sql               | Membuat tabel `movies_table`             |
-| 025  | 025_create_poster_table.sql               | Membuat tabel `poster_table`             |
-| 026  | 026_create_streams_table.sql              | Membuat tabel `streams_table`            |
+| 022  | 022_create_mng_code_table.sql             | Membuat tabel `mng_code`                 |
+| 023  | 023_create_keywords_table.sql             | Membuat tabel `keywords`                 |
+| 024  | 024_create_movies_table.sql               | Membuat tabel `movies`                   |
+| 025  | 025_create_poster_table.sql               | Membuat tabel `poster`                   |
+| 026  | 026_create_streams_table.sql              | Membuat tabel `streams`                  |
+| 027  | 027_create_article_table.sql              | Membuat tabel `article`                  |
 
 ---
 
