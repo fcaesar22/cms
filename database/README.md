@@ -41,6 +41,7 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 029  | 029_create_podcast_data_table.sql                        | Membuat tabel `podcast_data`                            |
 | 030  | 030_create_podcast_episode_table.sql                     | Membuat tabel `podcast_episode`                         |
 | 031  | 031_create_podcast_recommendation_table.sql              | Membuat tabel `podcast_recommendation`                  |
+| 032  | 032_create_tmp_socialtv_table.sql                        | Membuat tabel `tmp_socialtv`                            |
 
 ---
 
