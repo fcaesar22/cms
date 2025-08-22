@@ -44,6 +44,7 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 032  | 032_create_tmp_socialtv_table.sql                        | Membuat tabel `tmp_socialtv`                            |
 | 033  | 033_create_covers_table.sql                              | Membuat tabel `covers`                                  |
 | 034  | 034_create_tab_webinar_table.sql                         | Membuat tabel `tab_webinar`                             |
+| 035  | 035_create_reels_table.sql                               | Membuat tabel `reels`                                   |
 
 ---
 
