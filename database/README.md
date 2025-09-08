@@ -45,6 +45,9 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 033  | 033_create_covers_table.sql                              | Membuat tabel `covers`                                  |
 | 034  | 034_create_tab_webinar_table.sql                         | Membuat tabel `tab_webinar`                             |
 | 035  | 035_create_reels_table.sql                               | Membuat tabel `reels`                                   |
+| 036  | 036_create_showcase_table.sql                            | Membuat tabel `showcase`                                |
+| 037  | 037_create_category_showcase_table.sql                   | Membuat tabel `category_showcase`                       |
+| 038  | 038_create_banner_showcase_table.sql                     | Membuat tabel `banner_showcase`                         |
 
 ---
 
