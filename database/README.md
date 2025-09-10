@@ -48,6 +48,11 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 036  | 036_create_showcase_table.sql                            | Membuat tabel `showcase`                                |
 | 037  | 037_create_category_showcase_table.sql                   | Membuat tabel `category_showcase`                       |
 | 038  | 038_create_banner_showcase_table.sql                     | Membuat tabel `banner_showcase`                         |
+| 039  | 039_create_catchup_table.sql                             | Membuat tabel `catchup`                                 |
+| 040  | 040_create_catchup_content_table.sql                     | Membuat tabel `catchup_content`                         |
+| 041  | 041_create_category_catchup_table.sql                    | Membuat tabel `category_catchup`                        |
+| 042  | 042_create_model_tag_table.sql                           | Membuat tabel `model_tag`                               |
+| 043  | 043_create_tag_table.sql                                 | Membuat tabel `tag`                                     |
 
 ---
 
