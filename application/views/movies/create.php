@@ -18,6 +18,17 @@
     ::-ms-input-placeholder {color: #8f9295;} /* Microsoft Edge */
     .flatpickr-calendar.animate.open {width: 325px;}
     .flatpickr-prev-month svg path, .flatpickr-next-month svg path {fill: white;}
+    #searchinputcodeactive, #searchinputcodeinactive {padding: 10px; font-size: 14px; border: 1px solid grey; float: left; width: 60%; color: white; background: transparent;}
+    #searchbuttoncodeactive, #searchbuttoncodeinactive {float: left; width: 20%; padding: 10px; color: white; font-size: 17px; border: 1px solid grey; border-left: none; cursor: pointer; margin-bottom: 10px;}
+    #selectrowcodeactive, #selectrowcodeinactive {float: left; width: 20%; padding: 5px; color: white; font-size: 12px; border: 1px solid gray; border-left: none; cursor: pointer; margin-bottom: 10px;}
+    #searchinputkeywordactive, #searchinputkeywordinactive {padding: 10px; font-size: 14px; border: 1px solid grey; float: left; width: 60%; color: white; background: transparent;}
+    #searchbuttonkeywordactive, #searchbuttonkeywordinactive {float: left; width: 20%; padding: 10px; color: white; font-size: 17px; border: 1px solid grey; border-left: none; cursor: pointer; margin-bottom: 10px;}
+    #selectrowkeywordactive, #selectrowkeywordinactive {float: left; width: 20%; padding: 5px; color: white; font-size: 12px; border: 1px solid gray; border-left: none; cursor: pointer; margin-bottom: 10px;}
+    #tbody-tooltip {position: absolute; padding: 6px 12px; background: #fff; color: #333; border-radius: 4px; font-size: 13px; font-weight: 500; box-shadow: 0 2px 6px rgba(0,0,0,0.3); pointer-events: none; white-space: nowrap; z-index: 2000; display: none;}
+    #select_keyword_active + .select2-container--default .select2-selection--single, #select_keyword_inactive + .select2-container--default .select2-selection--single {background-color: #222323; border: 1px solid gray; border-radius: 2px; height: 35px; display: flex; align-items: center;}
+    #select_keyword_active + .select2-container--default .select2-selection__rendered, #select_keyword_inactive + .select2-container--default .select2-selection__rendered {color: #ffffff !important; padding-left: 10px;}
+    .keyword-select2-dark {background-color: #222323 !important;}
+    #modal-keyword .dropdown-menu, #modal-code .dropdown-menu {background-color: #222323;}
 </style>
 
 <section class="content">
@@ -266,14 +277,20 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active fade show" id="tab_code_active" role="tabpanel">
-                                        <div id="data-table_filter" class="dataTables_filter">
-                                            <label>Search:
-                                                <input type="search" id="search_word" name="search_word" maxlength="50" placeholder="Search for movie code..." aria-controls="data-table">
-                                            </label>
-                                        </div>
+                                        <span class="invalid-feedback" id="wardingsearchcodeactive" name="wardingsearchcodeactive" style="display:none;">minimum 3 charachters</span><br>
+                                        <input type="search" placeholder="Search for title..." name="searchinputcodeactive" id="searchinputcodeactive" minlength="5" maxlength="50">
+                                        <button type="button" name="searchbuttoncodeactive" id="searchbuttoncodeactive" class="btn btn-light"><i class="zmdi zmdi-search zmdi-hc-fw"></i></button>
+                                        <button type="button" name="selectrowcodeactive" id="selectrowcodeactive" class="btn btn-light">
+                                            <select name="rowselectcodeactive" id="rowselectcodeactive">
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </button>
                                         <br>
                                         <div id="table_category" class="table-responsive">
-                                            <table class="table table-striped table-inverse table-bordered mb-0" id="mytable1" width="100%" cellspacing="0">
+                                            <table class="table table-striped table-inverse table-bordered mb-0" id="tableCodeActive" width="100%" cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>No.</th>
@@ -286,19 +303,25 @@
                                                 <tbody>
                                                 </tbody>
                                             </table>
-                                            <div class="dataTables_info" id="data-table_info" role="status" aria-live="polite"></div>
-                                            <div style='margin-top: 10px;' id='pagination'></div>
+                                            <div class="dataTables_info" id="table_info_code_active" role="status" aria-live="polite"></div>
+                                            <div style='margin-top: 10px;' id='pagination_code_active'></div>
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="tab_code_inactive" role="tabpanel">
-                                        <div id="data-table_filter" class="dataTables_filter">
-                                            <label>Search:
-                                                <input type="search" id="search_word2" name="search_word2" maxlength="50" placeholder="Search for category name..." aria-controls="data-table">
-                                            </label>
-                                        </div>
+                                        <span class="invalid-feedback" id="wardingsearchcodeinactive" name="wardingsearchcodeinactive" style="display:none;">minimum 3 charachters</span><br>
+                                        <input type="search" placeholder="Search for title..." name="searchinputcodeinactive" id="searchinputcodeinactive" minlength="5" maxlength="50">
+                                        <button type="button" name="searchbuttoncodeinactive" id="searchbuttoncodeinactive" class="btn btn-light"><i class="zmdi zmdi-search zmdi-hc-fw"></i></button>
+                                        <button type="button" name="selectrowcodeinactive" id="selectrowcodeinactive" class="btn btn-light">
+                                            <select name="rowselectcodeinactive" id="rowselectcodeinactive">
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </button>
                                         <br>
                                         <div id="table_category" class="table-responsive">
-                                            <table class="table table-striped table-inverse table-bordered mb-0" id="mytable2" width="100%" cellspacing="0">
+                                            <table class="table table-striped table-inverse table-bordered mb-0" id="tableCodeInactive" width="100%" cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>No.</th>
@@ -311,8 +334,8 @@
                                                 <tbody>
                                                 </tbody>
                                             </table>
-                                            <div class="dataTables_info" id="data-table_info2" role="status" aria-live="polite"></div>
-                                            <div style='margin-top: 10px;' id='pagination2'></div>
+                                            <div class="dataTables_info" id="table_info_code_inactive" role="status" aria-live="polite"></div>
+                                            <div style='margin-top: 10px;' id='pagination_code_inactive'></div>
                                         </div>
                                     </div>
                                 </div>
@@ -380,11 +403,11 @@
                                 <option value="SUBGEN">Sub Genre</option>
                             </select>
                             <br><br>
-                            <span class="invalid-feedback" id="wardingsearchactive" name="wardingsearchactive" style="display:none;">minimum 5 charachters</span>
-                            <input type="search" placeholder="Search for title..." name="searchinputactive" id="searchinputactive" minlength="5" maxlength="50">
-                            <button type="button" name="searchbuttonactive" id="searchbuttonactive" class="btn btn-light"><i class="zmdi zmdi-search zmdi-hc-fw"></i></button>
-                            <button type="button" name="selectrow" id="selectrow" class="btn btn-light">
-                                <select name="rowselect" id="rowselect">
+                            <span class="invalid-feedback" id="wardingsearchkeywordactive" name="wardingsearchkeywordactive" style="display:none;">minimum 5 charachters</span>
+                            <input type="search" placeholder="Search for title..." name="searchinputkeywordactive" id="searchinputkeywordactive" minlength="5" maxlength="50">
+                            <button type="button" name="searchbuttonkeywordactive" id="searchbuttonkeywordactive" class="btn btn-light"><i class="zmdi zmdi-search zmdi-hc-fw"></i></button>
+                            <button type="button" name="selectrowkeywordactive" id="selectrowkeywordactive" class="btn btn-light">
+                                <select name="rowselectkeywordactive" id="rowselectkeywordactive">
                                     <option value="10">10</option>
                                     <option value="25">25</option>
                                     <option value="50">50</option>
@@ -401,7 +424,7 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="tableactive">
+                                    <tbody id="my-tbody" class="tableactive">
                                     </tbody>
                                 </table>
                                 <div class="dataTables_info" id="data-table_keyword" role="status" aria-live="polite"></div>
@@ -415,9 +438,17 @@
                                 <option value="SUBGEN">Sub Genre</option>
                             </select>
                             <br><br>
-                            <span class="invalid-feedback" id="wardingsearchinactive" name="wardingsearchinactive" style="display:none;">minimum 5 charachters</span>
-                            <input type="search" placeholder="Search for title..." name="searchinputinactive" id="searchinputinactive" minlength="5" maxlength="50">
-                            <button type="button" name="searchbuttoninactive" id="searchbuttoninactive" class="btn btn-light"><i class="zmdi zmdi-search zmdi-hc-fw"></i></button>
+                            <span class="invalid-feedback" id="wardingsearchkeywordinactive" name="wardingsearchkeywordinactive" style="display:none;">minimum 5 charachters</span>
+                            <input type="search" placeholder="Search for title..." name="searchinputkeywordinactive" id="searchinputkeywordinactive" minlength="5" maxlength="50">
+                            <button type="button" name="searchbuttonkeywordinactive" id="searchbuttonkeywordinactive" class="btn btn-light"><i class="zmdi zmdi-search zmdi-hc-fw"></i></button>
+                            <button type="button" name="selectrowkeywordinactive" id="selectrowkeywordinactive" class="btn btn-light">
+                                <select name="rowselectkeywordinactive" id="rowselectkeywordinactive">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </button>
                             <br>
                             <div id="table_keyword" class="table-responsive">
                                 <table class="table table-striped table-inverse table-bordered mb-0" id="mytablekeyword2" width="100%" cellspacing="0">
@@ -483,10 +514,12 @@
     </div>
 </div>
 
+<div id="tbody-tooltip">Drag & drop keywords to reorder</div>
+
 <script type="text/javascript">
     var selectedGroupKeyword = <?= json_encode((array) $selected_group_keyword) ?>;
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('#movie_code').select2({
             ajax: {
                 url: '<?= base_url() ?>movies/get_list_movie_code',
@@ -497,17 +530,16 @@
                     return {
                         searchTerm: params.term,
                         page: params.page
-                    };
+                    }
                 },
                 processResults: function (data, params) {
-                    params.page = params.page || 1;
+                    params.page = params.page || 1
                     return {
                         results: data.items,
                         pagination: {
                             more: (params.page * 10) < data.total_count
                         }
-
-                    };
+                    }
                 },
                 cache: true
             },
@@ -520,14 +552,14 @@
             $.ajax({
                 type: 'POST',
                 url: '<?= base_url() ?>movies/get_single_movie_code',
-                data: { id: selectedMovieCode },
+                data: {id: selectedMovieCode},
                 dataType: 'json'
             }).then(function (data) {
                 if (data && data.id) {
-                    var option = new Option(data.text, data.id, true, true);
-                    $('#movie_code').append(option).trigger('change');
+                    var option = new Option(data.text, data.id, true, true)
+                    $('#movie_code').append(option).trigger('change')
                 }
-            });
+            })
         }
 
         $('#movie_type').select2({})
@@ -539,42 +571,42 @@
         $('#movie_child').select2({})
 
         $('#movie_type').on('select2:select', function (e) {
-            $('#movie_parent').val(null).trigger('change');
-            $('#movie_parent_id').val(null).trigger('change');
-            $('#movie_child').val(null).trigger('change');
+            $('#movie_parent').val(null).trigger('change')
+            $('#movie_parent_id').val(null).trigger('change')
+            $('#movie_child').val(null).trigger('change')
             var type = $('#movie_type').val()
-            initMovieParentSelect2(type);
+            initMovieParentSelect2(type)
         })
 
-        var selectedType = $('#movie_type').val();
+        var selectedType = $('#movie_type').val()
         if (selectedType) {
-            initMovieParentSelect2(selectedType);
+            initMovieParentSelect2(selectedType)
         }
 
         if (selectedMovieParent) {
             $.ajax({
                 type: 'POST',
                 url: '<?= base_url() ?>movies/get_single_movie_parent',
-                data: { id: selectedMovieParent },
+                data: {id: selectedMovieParent},
                 dataType: 'json'
             }).then(function (data) {
                 if (data && data.id) {
-                    var option = new Option(data.text, data.id, true, true);
-                    $('#movie_parent').append(option).trigger('change');
+                    var option = new Option(data.text, data.id, true, true)
+                    $('#movie_parent').append(option).trigger('change')
                 }
-            });
+            })
         }
 
         $('#movie_parent').on('select2:select', function (e) {
-            $('#movie_parent_id').val(null).trigger('change');
-            $('#movie_child').val(null).trigger('change');
+            $('#movie_parent_id').val(null).trigger('change')
+            $('#movie_child').val(null).trigger('change')
             var parent = $('#movie_parent').val()
             initMovieParentIDSelect2(parent)
         })
 
 
         if (selectedMovieParentID && selectedMovieParent) {
-            initMovieParentIDSelect2(selectedMovieParent);
+            initMovieParentIDSelect2(selectedMovieParent)
             $.ajax({
                 type: 'POST',
                 url: '<?= base_url() ?>movies/get_single_movie_parent_id',
@@ -585,10 +617,10 @@
                 dataType: 'json'
             }).then(function (data) {
                 if (data && data.id) {
-                    var option = new Option(data.text, data.id, true, true);
-                    $('#movie_parent_id').append(option).trigger('change');
+                    var option = new Option(data.text, data.id, true, true)
+                    $('#movie_parent_id').append(option).trigger('change')
                 }
-            });
+            })
         }
 
         $('#group_keyword').select2({
@@ -601,17 +633,16 @@
                     return {
                         searchTerm: params.term,
                         page: params.page,
-                    };
+                    }
                 },
                 processResults: function (data, params) {
-                    params.page = params.page || 1;
+                    params.page = params.page || 1
                     return {
                         results: data.items,
                         pagination: {
                             more: (params.page * 10) < data.total_count
                         }
-
-                    };
+                    }
                 },
                 cache: true
             },
@@ -625,14 +656,14 @@
                 url: '<?= base_url("movies/get_multiple_group_keyword") ?>',
                 type: 'POST',
                 dataType: 'json',
-                data: { ids: selectedGroupKeyword },
+                data: {ids: selectedGroupKeyword},
                 success: function (response) {
                     response.forEach(function (group) {
-                        var option = new Option(group.text, group.id, true, true);
-                        $('#group_keyword').append(option).trigger('change');
-                    });
+                        var option = new Option(group.text, group.id, true, true)
+                        $('#group_keyword').append(option).trigger('change')
+                    })
                 }
-            });
+            })
         }
     })
 
@@ -648,23 +679,23 @@
                         searchTerm: params.term,
                         page: params.page,
                         movie_type: type
-                    };
+                    }
                 },
                 processResults: function (data, params) {
-                    params.page = params.page || 1;
+                    params.page = params.page || 1
                     return {
                         results: data.items,
                         pagination: {
                             more: (params.page * 10) < data.total_count
                         }
-                    };
+                    }
                 },
                 cache: true
             },
             placeholder: "Select Movie Parent",
             templateResult: format,
             templateSelection: formatSelection
-        });
+        })
     }
 
     function initMovieParentIDSelect2(parent) {
@@ -679,17 +710,16 @@
                         searchTerm: params.term,
                         page: params.page,
                         movie_parent: parent
-                    };
+                    }
                 },
                 processResults: function (data, params) {
-                    params.page = params.page || 1;
+                    params.page = params.page || 1
                     return {
                         results: data.items,
                         pagination: {
                             more: (params.page * 10) < data.total_count
                         }
-
-                    };
+                    }
                 },
                 cache: true
             },
@@ -701,142 +731,165 @@
 
     function format (repo) {
         if (repo.loading) {
-            return repo.text;
+            return repo.text
         }
         var $container = $(
             "<div class='select2-result-repository clearfix'>" +
             "<div class='select2-result-repository__title'></div>" +
             "</div>"
-        );
-        $container.find(".select2-result-repository__title").text(repo.text);
-        return $container;
+        )
+        $container.find(".select2-result-repository__title").text(repo.text)
+        return $container
     }
 
     function formatSelection (repo) {
-        return repo.text;
+        return repo.text
     }
 
-    $( function() {
+    $( function () {
         $("#publish_date").flatpickr({
             mode: "range",
             dateFormat: "Y-m-d",
             defaultDate: "<?= set_value('publish_date') ?>"
         })
         $("#publish_date").prop('readonly', false)
-    });
+    })
 
     // management code
-    $(".adds").click(function(){
+    $(".adds").click(function () {
         $('#insert_code').css('display', 'block')
-    });
+    })
 
-    $(".menulist").click(function(){
-        $(".tab_code_active").trigger('click');
-    });
+    $(".menulist").click(function () {
+        $(".tab_code_active").trigger('click')
+    })
 
-    $(".tab_code_active").click(function(){
-        $('#insert_code').css('display', 'none')
-        $('#mytable1 tbody').empty();
-        $('#visible_code').val('Y')
-        var visible = $('#visible_code').val()
+    function handleCodeTab(type) {
+        var tableId = type === 'active' ? '#tableCodeActive' : '#tableCodeInactive'
+        var tabShow = type === 'active' ? '#tab_code_active' : '#tab_code_inactive'
+        var tabHide = type === 'active' ? '#tab_code_inactive' : '#tab_code_active'
+        $(tableId + ' tbody').empty()
+        var visible = type === 'active' ? 'Y' : 'N'
+        $('#visible_code').val(visible)
         var sort_by = $('#sort_table_code').val()
         var order_sort = $('#order_table_code').val()
-        sortPagination(null,sort_by,order_sort,visible,0);
-        $("#tab_code_inactive").hide();
-        $("#tab_code_active").show();
-    });
+        $('#rowselectcode' + type).val(10).trigger('change.select2')
+        var rowperpage = $('#rowselectcode' + type).val()
+        sortPagination(null, sort_by, order_sort, visible, rowperpage, 0)
+        $(tabHide).hide()
+        $(tabShow).show()
+    }
 
-    $(".tab_code_inactive").click(function(){
-        $('#insert_code').css('display', 'none')
-        $('#mytable2 tbody').empty();
-        $('#visible_code').val('N')
-        var visible = $('#visible_code').val()
+    $(document).on('click', '.tab_code_active', function () {
+        handleCodeTab('active')
+    })
+
+    $(document).on('click', '.tab_code_inactive', function () {
+        handleCodeTab('inactive')
+    })
+
+    $('#rowselectcodeactive').select2({
+        minimumResultsForSearch: Infinity,
+        width: '100%',
+        dropdownParent: $('#modal-code'),
+        dropdownCssClass: 'keyword-select2-dark'
+    })
+
+    $('#rowselectcodeinactive').select2({
+        minimumResultsForSearch: Infinity,
+        width: '100%',
+        dropdownParent: $('#modal-code'),
+        dropdownCssClass: 'keyword-select2-dark'
+    })
+
+    function handleRowSelectCode(type) {
+        var pageno = 0
         var sort_by = $('#sort_table_code').val()
         var order_sort = $('#order_table_code').val()
-        sortPagination(null,sort_by,order_sort,visible,0);
-        $("#tab_code_active").hide();
-        $("#tab_code_inactive").show();
-    });
-
-    $('#pagination').on('click','a',function(e){
-        e.preventDefault(); 
-        var pageno = $(this).attr('data-ci-pagination-page');
         var visible = $('#visible_code').val()
-        var sort_by = $('#sort_table_code').val()
-        var order_sort = $('#order_table_code').val()
-        var key_search = $('#search_word').val()
-        if (key_search=='') {
-            key_search = null
+        var key_search = $('#searchinputcode' + type).val() || null
+        var rowperpage = $('#rowselectcode' + type).val()
+        sortPagination(key_search, sort_by, order_sort, visible, rowperpage, pageno)
+    }
+
+    $(document).on('change', '#rowselectcodeactive', function () {
+        handleRowSelectCode('active')
+    })
+
+    $(document).on('change', '#rowselectcodeinactive', function () {
+        handleRowSelectCode('inactive')
+    })
+
+    function handleCodePaginationClick(paginationSelector, type) {
+        $(paginationSelector).on('click', '.page-link', function (e) {
+            e.preventDefault()
+            var link = $(this).find('a')
+            var pageno = link.data('ci-pagination-page')
+            if (!pageno) {
+                var text = $(this).text().trim()
+                if (!isNaN(text)) {
+                    pageno = parseInt(text, 10)
+                }
+            }
+            if (!pageno) {
+                return
+            }
+            var visible = $('#visible_code').val()
+            var sort_by = $('#sort_table_code').val()
+            var order_sort = $('#order_table_code').val()
+            var key_search = $('#search_code_' + type).val() || null
+            var rowperpage = $('#rowselectcode' + type).val()
+            sortPagination(key_search, sort_by, order_sort, visible, rowperpage, pageno)
+        })
+    }
+
+    handleCodePaginationClick('#pagination_code_active', 'active')
+
+    handleCodePaginationClick('#pagination_code_inactive', 'inactive')
+
+    function handleSearchCode(type) {
+        var search = $('#searchinputcode' + type).val()
+        if (!search || search.length < 3) {
+            $('#wardingsearchcode' + type).show()
+            setTimeout(function () {
+                $('#wardingsearchcode' + type).hide()
+            }, 5000)
+            return
         }
-        sortPagination(key_search,sort_by,order_sort,visible,pageno);
-    });
-
-    $('#pagination2').on('click','a',function(e){
-        e.preventDefault(); 
-        var pageno = $(this).attr('data-ci-pagination-page');
-        var visible = $('#visible_code').val()
         var sort_by = $('#sort_table_code').val()
         var order_sort = $('#order_table_code').val()
-        var key_search = $('#search_word').val()
-        if (key_search=='') {
-            key_search = null
-        }
-        sortPagination(key_search,sort_by,order_sort,visible,pageno);
-    });
-
-    $("#search_word").keyup(function(){
-        var strval =  $("#search_word").val();
         var visible = $('#visible_code').val()
-        var sort_by = $('#sort_table_code').val()
-        var order_sort = $('#order_table_code').val()
-        var norow = 0;
-        if(strval == "")
-        {
-            sortPagination(null,sort_by,order_sort,visible,0);
-        } 
-        else
-        {
-            sortPagination(strval,sort_by,order_sort,visible,0)
-        }
-    });
+        var rowperpage = $('#rowselectcode' + type).val()
+        sortPagination(search, sort_by, order_sort, visible, rowperpage, 0)
+    }
 
-    $("#search_word2").keyup(function(){
-        var strval =  $("#search_word2").val();
-        var visible = $('#visible_code').val()
-        var sort_by = $('#sort_table_code').val()
-        var order_sort = $('#order_table_code').val()
-        var norow = 0;
-        if(strval == "")
-        {
-            sortPagination(null,sort_by,order_sort,visible,0);
-        } 
-        else
-        {
-            sortPagination(strval,sort_by,order_sort,visible,0)
-        }
-    });
+    $(document).on('click', '#searchbuttoncodeactive', function () {
+        handleSearchCode('active')
+    })
 
-    function sortPagination(key_search,sort_by,order_sort,visible,pagno){
-        var sort_by_name = 'keyword_name'
+    $(document).on('click', '#searchbuttoncodeinactive', function () {
+        handleSearchCode('inactive')
+    })
+
+    function sortPagination(key_search, sort_by, order_sort, visible, rowperpage, pageno) {
         var statustable = $('#visible_code').val()
         $.ajax({
-            url: '<?=base_url()?>movies/list_movie_code/'+key_search+'/'+sort_by+'/'+order_sort+'/'+visible+'/'+pagno,
+            url: '<?=base_url()?>movies/list_movie_code/'+key_search+'/'+sort_by+'/'+order_sort+'/'+visible+'/'+rowperpage+'/'+pageno,
             type: 'get',
             dataType: 'json',
-            success: function(response){
-                var order_sort = response.order;
-                var x = response.x;
-                var y = response.y;
-                var z = response.z;
-                var show = 'Showing '+x+' to '+y+' of '+z+' entries';
-                $('#data-table_info').html(show);
-                if (statustable=='Y') {
-                    $('#data-table_info').html(show);
+            success: function (response) {
+                var order_sort = response.order
+                var x = response.x
+                var y = response.y
+                var z = response.z
+                var show = 'Showing '+x+' to '+y+' of '+z+' entries'
+                $('#table_info_code_active').html(show)
+                if (statustable == 'Y') {
+                    $('#table_info_code_active').html(show)
                 } else {
-                    $('#data-table_info2').html(show);
+                    $('#table_info_code_inactive').html(show)
                 }
-                if (response.pagination=="")
-                {
+                if (response.pagination == "") {
                     var page1 = `<div class="pagging text-center">
                                     <nav>
                                         <ul class="pagination justify-content-center">
@@ -846,80 +899,73 @@
                                         </ul>
                                     </nav>
                                 </div>`
-                    if (statustable=='Y') {
-                        $('#pagination').html(page1);
+                    if (statustable == 'Y') {
+                        $('#pagination_code_active').html(page1)
                     } else {
-                        $('#pagination2').html(page1);
+                        $('#pagination_code_inactive').html(page1)
+                    }
+                } else {
+                    if (statustable=='Y') {
+                        $('#pagination_code_active').html(response.pagination)
+                    } else {
+                        $('#pagination_code_inactive').html(response.pagination)
                     }
                 }
-                else
-                {
-                    var pageee = response.pagination
-                    if (statustable=='Y') {
-                        $('#pagination').html(response.pagination);
-                    } else {
-                        $('#pagination2').html(response.pagination);
-                    }
-                }
-                createTable(response.result,response.row);
+                createTableCode(response.result, response.row)
             }
-        });
+        })
     }
 
-    function createTable(result,sno){
+    function createTableCode(result, sno){
         var statustable = $('#visible_code').val()
         if (statustable=='Y') {
-            $('#mytable1 tbody').empty();
+            $('#tableCodeActive tbody').empty()
         } else {
-            $('#mytable2 tbody').empty();
+            $('#tableCodeInactive tbody').empty()
         }
-
-        if (result.length > 0)
-        {
-            sno = Number(sno);
-            for(index in result){
-                var id = result[index].code_id;
-                var code_init = result[index].code_init;
-                var code_remark = result[index].code_remark;
-                sno+=1;
-                var base_url ='<?php echo base_url()?>'
-                if (result[index].code_visible=="N") {
-                    var html = '<a onclick="activeConfirm(\''+id+'\')" href="#!" class="dropdown-item"><i class="zmdi zmdi-layers zmdi-hc-fw"></i>Activate</a>'
-                } else {
-                    var html = '<a onclick="inactiveConfirm(\''+id+'\')" href="#!" class="dropdown-item"><i class="zmdi zmdi-layers-off zmdi-hc-fw"></i>Deactivate</a>'
-                }
-
-                var tr = "<tr>";
-                tr += "<td>"+ sno +"</td>";
-                tr += "<td>"+ id +"</td>";
-                tr += "<td>"+ code_init +"</td>";
-                tr += "<td>"+ code_remark +"</td>";
-                tr += "<td><div class='dropdown'><button class='btn btn-light dropdown-toggle' data-toggle='dropdown'>ACTION</button><div class='dropdown-menu dropdown-menu--icon'>"+ html +"<a href='#!' onclick='edit_code(\""+id+"\")' class='dropdown-item'><i class='zmdi zmdi-edit zmdi-hc-fw'></i>Edit</a></div></div></td>";
-                tr += "</tr>";
+        if (result.length > 0) {
+            sno = Number(sno)
+            for (index in result) {
+                var id = result[index].code_id
+                var code_init = result[index].code_init
+                var code_remark = result[index].code_remark
+                sno+=1
+                var base_url ='<?php echo base_url() ?>'
+                var html = result[index].code_visible == "N" 
+                    ? `<a onclick="confirmCodeAction('${id}', 'activate')" href="#!" class="dropdown-item">
+                         <i class="zmdi zmdi-layers zmdi-hc-fw"></i>Activate
+                       </a>`
+                    : `<a onclick="confirmCodeAction('${id}', 'deactivate')" href="#!" class="dropdown-item">
+                         <i class="zmdi zmdi-layers-off zmdi-hc-fw"></i>Deactivate
+                       </a>`
+                var tr = "<tr>"
+                tr += "<td>"+ sno +"</td>"
+                tr += "<td>"+ id +"</td>"
+                tr += "<td>"+ code_init +"</td>"
+                tr += "<td>"+ code_remark +"</td>"
+                tr += "<td><div class='dropdown'><button class='btn btn-light dropdown-toggle' data-toggle='dropdown'>ACTION</button><div class='dropdown-menu dropdown-menu--icon'>"+ html +"<a href='#!' onclick='edit_code(\""+id+"\")' class='dropdown-item'><i class='zmdi zmdi-edit zmdi-hc-fw'></i>Edit</a></div></div></td>"
+                tr += "</tr>"
                 if (statustable=='Y') {
-                    $('#mytable1 tbody').append(tr);
+                    $('#tableCodeActive tbody').append(tr)
                 } else {
-                    $('#mytable2 tbody').append(tr);
+                    $('#tableCodeInactive tbody').append(tr)
                 }
             }
-        }
-        else
-        {
+        } else {
             var tr = `<tr class="odd"><td valign="top" colspan="5" class="dataTables_empty">No matching records found</td></tr>`
             if (statustable=='Y') {
-                $('#mytable1 tbody').append(tr);
+                $('#tableCodeActive tbody').append(tr)
             } else {
-                $('#mytable2 tbody').append(tr);
+                $('#tableCodeInactive tbody').append(tr)
             }
         }
     }
 
-    $(document).on("click","#code",(function(e){
-        e.preventDefault();
+    $(document).on("click", "#code", (function (e) {
+        e.preventDefault()
         $('#insert_code').css('display', 'block')
-        $('.nav-tabs a[href="#tab_add_code"]').tab('show');
+        $('.nav-tabs a[href="#tab_add_code"]').tab('show')
         var contentid = $('#contentid').val()
-        
         var html = `<form action="#" method="post" id="form_code" autocomplete="off">
                         <div class="row">
                             <div class="col-md-12">
@@ -937,58 +983,99 @@
                                 </div>
                             </div>
                         </div>`
-        $('#tab_add_code').html(html);
+        $('#tab_add_code').html(html)
     }))
 
-    $("#insert_code").click(function(){
-        var self = $('#form_code');
-        var initialcode_res = $(self).find('#initial_code').val();
-        var remark_res = $(self).find('#remark').val();
+    $("#insert_code").click(function () {
+        var self = $('#form_code')
+        var initialcode_res = $(self).find('#initial_code').val()
+        var remark_res = $(self).find('#remark').val()
         if (initialcode_res == '') {
-            $('#code_val').text('* Please input your initial code');
+            $('#code_val').text('* Please input your initial code')
             $('#code_val').show()
         } else {
-            $("#code_val").hide();
+            $("#code_val").hide()
         }
         if (remark_res == '') {
-            $('#remark_val').text('* Please input your remark');
+            $('#remark_val').text('* Please input your remark')
             $('#remark_val').show()
         } else {
-            $("#remark_val").hide();
+            $("#remark_val").hide()
         }
-
         if (initialcode_res!='' && remark_res!='') {
-            $('#insert_code').text('Submit...'); //change button text
-            $('#insert_code').attr('disabled',true); //set button disable
-            // ajax adding data to database
-            $.ajax({
-                url : "<?php echo site_url('movies/insert_code')?>",
-                type: "POST",
-                data: $('#form_code').serialize(),
-                dataType: "JSON",
-                success: function(data)
-                {
-                    if(data.error==='0')
-                    {
-                        alert(data.message);
-                        $('#insert_code').text('Submit'); //change button text
-                        $('#insert_code').attr('disabled',false); //set button enable
-                        $(".menulist").trigger('click');
-                    }else{
-                        $('#insert_code').text('Submit'); //change button text
-                        $('#insert_code').attr('disabled',false); //set button enable
-                        alert(data.message);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert('Data gagal disimpan, silahkan isi category!');
-                    $('#insert_code').text('Submit'); //change button text
-                    $('#insert_code').attr('disabled',false); //set button enable 
+            $('#insert_code').text('Submit...')
+            $('#insert_code').attr('disabled', true)
+            swal({
+                title: 'Are you sure?',
+                type: 'warning',
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonClass: 'btn btn-success',
+                confirmButtonText: 'Yes',
+                cancelButtonClass: 'btn btn-light',
+                background: '#222323',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then(function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: '<?php echo site_url("movies/codeCreateUpdate") ?>',
+                        type: 'post',
+                        data: $('#form_code').serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            swal({
+                                title: response.error === '0' ? 'Success' : 'Failed',
+                                text: response.message,
+                                type: response.error === '0' ? 'success' : 'error',
+                                buttonsStyling: false,
+                                confirmButtonClass: 'btn btn-light',
+                                background: '#222323',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then(function (ok) {
+                                if (ok && response.error === '0') {
+                                    $('#insert_code').text('Submit')
+                                    $('#insert_code').attr('disabled', false)
+                                    $(".menulist").trigger('click')
+                                    $(".tab_code_inactive").trigger('click')
+                                } else {
+                                    $('#insert_code').text('Submit')
+                                    $('#insert_code').attr('disabled', false)
+                                }
+                            }).catch(function () {
+                                $('#insert_code').text('Submit')
+                                $('#insert_code').attr('disabled', false)
+                            })
+                        },
+                        error: function () {
+                            swal({
+                                title: 'Failed',
+                                text: 'Failed to process request',
+                                type: 'error',
+                                buttonsStyling: false,
+                                confirmButtonClass: 'btn btn-light',
+                                background: '#222323',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then(function (ok) {
+                                if (ok && response.error === '0') {
+                                    $('#insert_code').text('Submit')
+                                    $('#insert_code').attr('disabled', false)
+                                }
+                            }).catch(function () {
+                                $('#insert_code').text('Submit')
+                                $('#insert_code').attr('disabled', false)
+                            })
+                        },
+                    })
                 }
-            });
+            }).catch(function () {
+                $('#insert_code').text('Submit')
+                $('#insert_code').attr('disabled', false)
+            })
         }
-    });
+    })
 
     function edit_code(id) {
         var html = `<form action="#" method="post" id="form_code_edit" autocomplete="off">
@@ -1009,296 +1096,354 @@
                             </div>
                             <input type="hidden" name="code_id" id="code_id" value="${id}">
                         </div>`
-        $('#changing-edit').html(html);
-
+        $('#changing-edit').html(html)
         $.ajax({
-            url : "<?php echo site_url('movies/get_data_edit_code');?>",
+            url : "<?php echo site_url('movies/get_data_edit_code') ?>",
             method : "POST",
             data :{id:id},
             async : true,
             dataType : 'json',
-            success : function(data){
+            success : function (data) {
                 var val_init = data[0]['code_init']
                 var val_remark = data[0]['code_remark']
-                $('#form_code_edit [name="initial_code"]').val(val_init).trigger('change');
-                $('#form_code_edit [name="remark"]').val(val_remark).trigger('change');
+                $('#form_code_edit [name="initial_code"]').val(val_init).trigger('change')
+                $('#form_code_edit [name="remark"]').val(val_remark).trigger('change')
             }
-        });
-        $('#modal-edit').modal('show');
+        })
+        $('#modal-edit').modal('show')
     }
 
-    $("#update_code").click(function(){
-        var self = $('#form_code_edit');
-        var initialcode_res = $(self).find('#initial_code').val();
-        var remark_res = $(self).find('#remark').val();
-        if (initialcode_res == ''){
-            $('#code_val').text('* Please input your initial code');
+    $("#update_code").click(function () {
+        var self = $('#form_code_edit')
+        var initialcode_res = $(self).find('#initial_code').val()
+        var remark_res = $(self).find('#remark').val()
+        if (initialcode_res == '') {
+            $('#code_val').text('* Please input your initial code')
             $('#code_val').show()
         } else {
-            $("#code_val").hide();
+            $("#code_val").hide()
         }
         if (remark_res == '') {
-            $('#remark_val').text('* Please input your remark');
+            $('#remark_val').text('* Please input your remark')
             $('#remark_val').show()
         } else {
-            $("#remark_val").hide();
+            $("#remark_val").hide()
         }
-
-        if (initialcode_res!='' && remark_res!='') {
-            $('#update_code').text('Submit...'); //change button text
-            $('#update_code').attr('disabled',true); //set button disable
-            // ajax adding data to database
-            $.ajax({
-                url : "<?php echo site_url('movies/update_code')?>",
-                type: "POST",
-                data: $('#form_code_edit').serialize(),
-                dataType: "JSON",
-                success: function(data)
-                {
-                    if(data.error==='0')
-                    {
-                        alert(data.message);
-                        $('#update_code').text('Submit'); //change button text
-                        $('#update_code').attr('disabled',false); //set button enable
-                        $('#modal-edit').modal('hide');
-                        $(".menulist").trigger('click');
-                    }else{
-                        $('#update_code').text('Submit'); //change button text
-                        $('#update_code').attr('disabled',false); //set button enable
-                        alert(data.message);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert('Data gagal disimpan, silahkan isi category!');
-                    $('#update_code').text('Submit'); //change button text
-                    $('#update_code').attr('disabled',false); //set button enable 
+        if (initialcode_res != '' && remark_res != '') {
+            $('#update_code').text('Submit...')
+            $('#update_code').attr('disabled', true)
+            swal({
+                title: 'Are you sure?',
+                type: 'warning',
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonClass: 'btn btn-success',
+                confirmButtonText: 'Yes',
+                cancelButtonClass: 'btn btn-light',
+                background: '#222323',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then(function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: '<?php echo site_url("movies/codeCreateUpdate") ?>',
+                        type: 'post',
+                        data: $('#form_code_edit').serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            swal({
+                                title: response.error === '0' ? 'Success' : 'Failed',
+                                text: response.message,
+                                type: response.error === '0' ? 'success' : 'error',
+                                buttonsStyling: false,
+                                confirmButtonClass: 'btn btn-light',
+                                background: '#222323',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then(function (ok) {
+                                if (ok && response.error === '0') {
+                                    $('#update_code').text('Submit')
+                                    $('#update_code').attr('disabled', false)
+                                    $('#modal-edit').modal('hide')
+                                    $(".tab_code_active").trigger('click')
+                                } else {
+                                    $('#update_code').text('Submit')
+                                    $('#update_code').attr('disabled', false)
+                                }
+                            }).catch(function () {
+                                $('#update_code').text('Submit')
+                                $('#update_code').attr('disabled', false)
+                            })
+                        },
+                        error: function () {
+                            swal({
+                                title: 'Failed',
+                                text: 'Failed to process request',
+                                type: 'error',
+                                buttonsStyling: false,
+                                confirmButtonClass: 'btn btn-light',
+                                background: '#222323',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then(function (ok) {
+                                if (ok && response.error === '0') {
+                                    $('#update_code').text('Submit')
+                                    $('#update_code').attr('disabled', false)
+                                }
+                            }).catch(function () {
+                                $('#update_code').text('Submit')
+                                $('#update_code').attr('disabled', false)
+                            })
+                        },
+                    })
                 }
-            });
+            }).catch(function () {
+                $('#update_code').text('Submit')
+                $('#update_code').attr('disabled', false)
+            })
         }
-    });
+    })
 
-    function activeConfirm(id) {
-        $.ajax({
-            url: '<?=base_url()?>movies/activate_code',
-            type: 'post',
-            data: {id:id},
-            dataType: 'json',
-            success: function(response){
-                console.log(response.error)
-                if (response.error==='0') {
-                    $(".menulist").trigger('click');
-                }
+    function confirmCodeAction(id, action) {
+        const settings = {
+            activate: {
+                url: '<?=base_url()?>movies/activate_code',
+                confirmText: 'Activate',
+                confirmClass: 'btn btn-success',
+                tabSelector: '.tab_code_active',
+            },
+            deactivate: {
+                url: '<?=base_url()?>movies/inactivate_code',
+                confirmText: 'Deactivate',
+                confirmClass: 'btn btn-danger',
+                tabSelector: '.tab_code_inactive',
             }
-        });
-    }
-
-    function inactiveConfirm(id) {
-        $.ajax({
-            url: '<?=base_url()?>movies/inactivate_code',
-            type: 'post',
-            data: {id:id},
-            dataType: 'json',
-            success: function(response){
-                console.log(response.error)
-                if (response.error==='0') {
-                    $(".menulist").trigger('click');
-                }
+        }
+        const config = settings[action]
+        if (!config) {
+            return
+        }
+        swal({
+            title: 'Are you sure?',
+            type: 'warning',
+            showCancelButton: true,
+            buttonsStyling: false,
+            confirmButtonClass: config.confirmClass,
+            confirmButtonText: config.confirmText,
+            cancelButtonClass: 'btn btn-light',
+            background: '#222323',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: config.url,
+                    type: 'post',
+                    data: {id: id},
+                    dataType: 'json',
+                    success: function (response) {
+                        swal({
+                            title: response.error === '0' ? 'Success' : 'Failed',
+                            text: response.message,
+                            type: response.error === '0' ? 'success' : 'error',
+                            buttonsStyling: false,
+                            confirmButtonClass: 'btn btn-light',
+                            background: '#222323',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then(function (ok) {
+                            if (ok && response.error === '0') {
+                                $(config.tabSelector).trigger('click')
+                            }
+                        })
+                    },
+                    error: function () {
+                        swal({
+                            title: 'Failed',
+                            text: 'Failed to process request',
+                            type: 'error',
+                            buttonsStyling: false,
+                            confirmButtonClass: 'btn btn-light',
+                            background: '#222323',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        })
+                    },
+                })
             }
-        });
+        })
     }
     // management code
 
     // management keyword
-    $("#keyword").click(function(){
-        $(".tab_keyword_active").trigger('click');
-    });
-
-    $(".tab_keyword_active").click(function(){
-        $('#mytablekeyword1 tbody').empty();
-        $('#visible_keyword').val('Y')
-        var visible = $('#visible_keyword').val()
-        var sort_by = $('#sort_table_keyword').val()
-        var order_sort = $('#order_table_keyword').val()
-        var contentKey = $('#select_keyword_active').val()
-        var rowperpage = $('#rowselect').val()
-        loadPagination(null,sort_by,order_sort,visible,contentKey,rowperpage,0);
-        $("#tab_keyword_inactive").hide();
-        $("#tab_keyword_active").show();
-    });
-
-    $(".tab_keyword_inactive").click(function(){
-        $('#mytablekeyword2 tbody').empty();
-        $('#visible_keyword').val('N')
-        var visible = $('#visible_keyword').val()
-        var sort_by = $('#sort_table_keyword').val()
-        var order_sort = $('#order_table_keyword').val()
-        var contentKey = $('#select_keyword_active').val()
-        var rowperpage = 10
-        loadPagination(null,sort_by,order_sort,visible,contentKey,rowperpage,0);
-        $("#tab_keyword_active").hide();
-        $("#tab_keyword_inactive").show();
-    });
-
-    $(document).on("change","#rowselect",function (e) {
-        var checkpage = $('.pagination .active span').text()
-        var pageno = parseInt(checkpage.replace('(current)(current)',''))
-        $('#visible_keyword').val('Y')
-        var visible = $('#visible_keyword').val()
-        var sort_by = $('#sort_table_keyword').val()
-        var order_sort = $('#order_table_keyword').val()
-        var contentKey = $('#select_keyword_active').val()
-        var key_search = $('#searchinputactive').val()
-        if (key_search=='') {
-            key_search = null
-        }
-        var rowperpage = $('#rowselect').val()
-        loadPagination(key_search,sort_by,order_sort,visible,contentKey,rowperpage,pageno);
-    });
-
-    $('#select_keyword_active').on('select2:select', function (e) {
-        var visible = $('#visible_keyword').val()
-        var sort_by = $('#sort_table_keyword').val()
-        var order_sort = $('#order_table_keyword').val()
-        var contentKey = $('#select_keyword_active').val()
-        var rowperpage = $('#rowselect').val()
-        loadPagination(null,sort_by,order_sort,visible,contentKey,rowperpage,0);
+    $("#keyword").click(function () {
+        $(".tab_keyword_active").trigger('click')
     })
 
-    $('#select_keyword_inactive').on('select2:select', function (e) {
-        var visible = $('#visible_keyword').val()
+    function handleKeywordTab(type) {
+        var tableId = type === 'active' ? '#mytablekeyword1' : '#mytablekeyword2'
+        var tabShow = type === 'active' ? '#tab_keyword_active' : '#tab_keyword_inactive'
+        var tabHide = type === 'active' ? '#tab_keyword_inactive' : '#tab_keyword_active'
+        var tabSelect = type === 'active' ? '#select_keyword_active' : '#select_keyword_inactive'
+        $(tableId + ' tbody').empty()
+        var visible = type === 'active' ? 'Y' : 'N'
+        $('#visible_keyword').val(visible)
         var sort_by = $('#sort_table_keyword').val()
         var order_sort = $('#order_table_keyword').val()
-        var contentKey = $('#select_keyword_inactive').val()
-        var rowperpage = 10
-        loadPagination(null,sort_by,order_sort,visible,contentKey,rowperpage,0);
+        var contentKey = $(tabSelect).val()
+        $('#rowselectkeyword' + type).val(10).trigger('change.select2')
+        var rowperpage = $('#rowselectkeyword' + type).val()
+        sortPaginationKeyword(null, sort_by, order_sort, visible, contentKey, rowperpage, 0)
+        $(tabHide).hide()
+        $(tabShow).show()
+    }
+
+    $(document).on('click', '.tab_keyword_active', function () {
+        handleKeywordTab('active')
     })
 
-    $('#pagination_keyword').on('click','a',function(e){
-        e.preventDefault(); 
-        var pageno = $(this).attr('data-ci-pagination-page');
-        var visible = $('#visible_keyword').val()
-        var sort_by = $('#sort_table_keyword').val()
-        var order_sort = $('#order_table_keyword').val()
-        var contentKey = $('#select_keyword_inactive').val()
-        var key_search = $('#searchinputactive').val()
-        if (key_search=='') {
-            key_search = null
-        }
-        var rowperpage = $('#rowselect').val()
-        loadPagination(key_search,sort_by,order_sort,visible,contentKey,rowperpage,pageno);
-    });
+    $(document).on('click', '.tab_keyword_inactive', function () {
+        handleKeywordTab('inactive')
+    })
 
-    $('#pagination_keyword2').on('click','a',function(e){
-        e.preventDefault(); 
-        var pageno = $(this).attr('data-ci-pagination-page');
-        var visible = $('#visible_keyword').val()
-        var sort_by = $('#sort_table_keyword').val()
-        var order_sort = $('#order_table_keyword').val()
-        var contentKey = $('#select_keyword_inactive').val()
-        var key_search = $('#searchinputinactive').val()
-        if (key_search=='') {
-            key_search = null
-        }
-        var rowperpage = 10
-        loadPagination(key_search,sort_by,order_sort,visible,contentKey,rowperpage,pageno);
-    });
-
-    $("#searchbuttonactive").click(function(){
-        var search =  $("#searchinputactive").val();
-        var length = search.length
-        if (length < 3) {
-            $("#wardingsearchactive").css("display", "block");
-            setTimeout(function () {
-                $('#wardingsearchactive').css("display", "none");
-            }, 5000)
-        } else {
-            var visible = $('#visible_keyword').val()
-            var sort_by = $('#sort_table_keyword').val()
-            var order_sort = $('#order_table_keyword').val()
-            var contentKey = $('#select_keyword_active').val()
-            var rowperpage = $('#rowselect').val()
-            loadPagination(search,sort_by,order_sort,visible,contentKey,rowperpage,0)
-        }
-    });
-
-    $("#searchbuttoninactive").click(function(){
-        var search =  $("#searchinputinactive").val();
-        var length = search.length
-        if (length < 3) {
-            $("#wardingsearchinactive").css("display", "block");
-            setTimeout(function () {
-                $('#wardingsearchinactive').css("display", "none");
-            }, 5000)
-        } else {
-            var visible = $('#visible_keyword').val()
-            var sort_by = $('#sort_table_keyword').val()
-            var order_sort = $('#order_table_keyword').val()
-            var contentKey = $('#select_keyword_inactive').val()
-            var rowperpage = $('#rowselect').val()
-            loadPagination(search,sort_by,order_sort,visible,contentKey,rowperpage,0)
-        }
-    });
-
-    $('.tableactive').sortable({
-        placeholder : "ui-state-highlight",
-        update : function(event, ui)
-        {
-            var page_id_array = new Array();
-            $('tbody tr').each(function(){
-                page_id_array.push($(this).attr('id'));
-            });
-
-            $.ajax({
-                url:"<?=base_url()?>movies/update_sort",
-                method:"POST",
-                data:{page_id_array:page_id_array, action:'update'},
-                success:function()
-                {
-                    $(".tab_keyword_active").trigger('click');
-                }
-            })
-        }
-    });
-
-    $('#rowselect').select2({
+    $('#rowselectkeywordactive').select2({
         minimumResultsForSearch: Infinity,
         width: '100%',
-        dropdownParent: $('#modal-keyword')
+        dropdownParent: $('#modal-keyword'),
+        dropdownCssClass: 'keyword-select2-dark'
+    })
+
+    $('#rowselectkeywordinactive').select2({
+        minimumResultsForSearch: Infinity,
+        width: '100%',
+        dropdownParent: $('#modal-keyword'),
+        dropdownCssClass: 'keyword-select2-dark'
+    })
+
+    function handleRowSelectKeyword(type) {
+        var pageno = 0
+        var sort_by = $('#sort_table_keyword').val()
+        var order_sort = $('#order_table_keyword').val()
+        var visible = $('#visible_keyword').val()
+        var key_search = $('#searchinputkeyword' + type).val() || null
+        var contentKey = $('#select_keyword_' + type).val() || null
+        var rowperpage = $('#rowselectkeyword' + type).val()
+        sortPaginationKeyword(key_search, sort_by, order_sort, visible, contentKey, rowperpage, pageno)
+    }
+
+    $(document).on('change', '#rowselectkeywordactive', function () {
+        handleRowSelectKeyword('active')
+    })
+
+    $(document).on('change', '#rowselectkeywordinactive', function () {
+        handleRowSelectKeyword('inactive')
     })
 
     $('#select_keyword_active').select2({
         minimumResultsForSearch: Infinity,
         width: '50%',
-        dropdownParent: $('#modal-keyword')
+        dropdownParent: $('#modal-keyword'),
+        dropdownCssClass: 'keyword-select2-dark'
     })
 
     $('#select_keyword_inactive').select2({
         minimumResultsForSearch: Infinity,
         width: '50%',
-        dropdownParent: $('#modal-keyword')
+        dropdownParent: $('#modal-keyword'),
+        dropdownCssClass: 'keyword-select2-dark'
     })
 
-    function loadPagination(key_search,sort_by,order_sort,visible,contentKey,rowperpage,pagno){
+    function handleKeywordSelect(categorySelector, rowSelector, searchSelector) {
+        $(categorySelector).on('select2:select', function () {
+            const visible = $('#visible_keyword').val()
+            const sort_by = $('#sort_table_keyword').val()
+            const order_sort = $('#order_table_keyword').val()
+            const key_search = $(searchSelector).val() || null
+            var contentKey = $(categorySelector).val() || null
+            const $row = $(rowSelector)
+            $row.val(10).trigger('change.select2')
+            sortPaginationKeyword(key_search, sort_by, order_sort, visible, contentKey, $row.val(), 0)
+        })
+    }
+
+    handleKeywordSelect('#select_keyword_active', '#rowselectkeywordactive', '#searchinputkeywordactive')
+
+    handleKeywordSelect('#select_keyword_inactive', '#rowselectkeywordinactive', '#searchinputkeywordinactive')
+
+    function handlePaginationKeywordClick(paginationSelector, type) {
+        $(paginationSelector).on('click', '.page-link', function (e) {
+            e.preventDefault()
+            var link = $(this).find('a')
+            var pageno = link.data('ci-pagination-page')
+            if (!pageno) {
+                var text = $(this).text().trim()
+                if (!isNaN(text)) {
+                    pageno = parseInt(text, 10)
+                }
+            }
+            if (!pageno) {
+                return
+            }
+            var isActive = type === 'active'
+            var visible = $('#visible_keyword').val()
+            var sort_by = $('#sort_table_keyword').val()
+            var order_sort = $('#order_table_keyword').val()
+            var contentKey = $('#select_keyword_' + type).val()
+            var key_search = $('#searchinputkeyword' + type).val() || null
+            var rowperpage = $('#rowselectkeyword' + type).val()
+            sortPaginationKeyword(key_search, sort_by, order_sort, visible, contentKey, rowperpage, pageno)
+        })
+    }
+
+    handlePaginationKeywordClick('#pagination_keyword', 'active')
+
+    handlePaginationKeywordClick('#pagination_keyword2', 'inactive')
+
+    function handleSearchKeyword(type) {
+        var search = $('#searchinputkeyword' + type).val()
+        if (!search || search.length < 3) {
+            $('#wardingsearchkeyword' + type).show()
+            setTimeout(function () {
+                $('#wardingsearchkeyword' + type).hide()
+            }, 5000)
+            return
+        }
+        var sort_by = $('#sort_table_keyword').val()
+        var order_sort = $('#order_table_keyword').val()
+        var visible = $('#visible_keyword').val()
+        var category = $('#category_movies' + type).val() || null
+        var contentKey = $('#select_keyword_' + type).val() || null
+        var rowperpage = $('#rowselectkeyword' + type).val()
+        sortPaginationKeyword(search, sort_by, order_sort, visible, contentKey, rowperpage, 0)
+    }
+
+    $(document).on('click', '#searchbuttonkeywordactive', function () {
+        handleSearchKeyword('active')
+    })
+
+    $(document).on('click', '#searchbuttonkeywordinactive', function () {
+        handleSearchKeyword('inactive')
+    })
+
+    function sortPaginationKeyword(key_search, sort_by, order_sort, visible, contentKey, rowperpage, pageno){
         var statustable = $('#visible_keyword').val()
         $.ajax({
-            url: '<?=base_url()?>movies/list_movie_keyword/'+key_search+'/'+sort_by+'/'+order_sort+'/'+visible+'/'+contentKey+'/'+rowperpage+'/'+pagno,
+            url: '<?=base_url()?>movies/list_movie_keyword/'+key_search+'/'+sort_by+'/'+order_sort+'/'+visible+'/'+contentKey+'/'+rowperpage+'/'+pageno,
             type: 'get',
             dataType: 'json',
-            success: function(response){
-                var order_sort = response.order;
-                var x = response.x;
-                var y = response.y;
-                var z = response.z;
-                var show = 'Showing '+x+' to '+y+' of '+z+' entries';
-                $('#data-table_keyword').html(show);
-                if (statustable=='Y') {
-                    $('#data-table_keyword').html(show);
+            success: function (response) {
+                var order_sort = response.order
+                var x = response.x
+                var y = response.y
+                var z = response.z
+                var show = 'Showing '+x+' to '+y+' of '+z+' entries'
+                $('#data-table_keyword').html(show)
+                if (statustable == 'Y') {
+                    $('#data-table_keyword').html(show)
                 } else {
-                    $('#data-table_keyword2').html(show);
+                    $('#data-table_keyword2').html(show)
                 }
-                if (response.pagination=="")
-                {
+                if (response.pagination == "") {
                     var page1 = `<div class="pagging text-center">
                                     <nav>
                                         <ul class="pagination justify-content-center">
@@ -1308,83 +1453,257 @@
                                         </ul>
                                     </nav>
                                 </div>`
-                    if (statustable=='Y') {
-                        $('#pagination_keyword').html(page1);
+                    if (statustable == 'Y') {
+                        $('#pagination_keyword').html(page1)
                     } else {
-                        $('#pagination_keyword2').html(page1);
+                        $('#pagination_keyword2').html(page1)
+                    }
+                } else {
+                    if (statustable == 'Y') {
+                        $('#pagination_keyword').html(response.pagination)
+                    } else {
+                        $('#pagination_keyword2').html(response.pagination)
                     }
                 }
-                else
-                {
-                    var pageee = response.pagination
-                    if (statustable=='Y') {
-                        $('#pagination_keyword').html(response.pagination);
-                    } else {
-                        $('#pagination_keyword2').html(response.pagination);
-                    }
-                }
-                createTableKeyword(response.result,response.row,contentKey);
+                createTableKeyword(response.result, response.row, contentKey)
             }
-        });
+        })
     }
 
-    function createTableKeyword(result,sno,contentKey){
+    function createTableKeyword(result, sno, contentKey) {
         var statustable = $('#visible_keyword').val()
-        if (statustable=='Y') {
-            $('#mytablekeyword1 tbody').empty();
+        if (statustable == 'Y') {
+            $tbody = $('#mytablekeyword1 tbody')
+            $('#mytablekeyword1 tbody').empty()
             var contentKey = $('#select_keyword_active').val()
             if (contentKey == 'STD') {
-                $("#mytablekeyword1 tbody").css("cursor", "all-scroll");
+                $('#mytablekeyword1 tbody').css('cursor', 'all-scroll')
             } else {
-                $("#mytablekeyword1 tbody").css("cursor", "default");
+                $('#mytablekeyword1 tbody').css('cursor', 'default')
             }
         } else {
-            $('#mytablekeyword2 tbody').empty();
+            $tbody = $('#mytablekeyword2 tbody')
+            $('#mytablekeyword2 tbody').empty()
         }
-
-        if (result.length > 0)
-        {
-            sno = Number(sno);
-            for(index in result){
-                var id = result[index].keyword_id;
-                var title = result[index].keyword_name;
-                if (contentKey=='SUBGEN') {
+        if (result.length > 0) {
+            sno = Number(sno)
+            for (index in result) {
+                var id = result[index].keyword_id
+                var title = result[index].keyword_name
+                if (contentKey == 'SUBGEN') {
                     var genreName = result[index].genre_name
                     title = title + " ("+genreName+")"
                 }
-                sno+=1;
-                var base_url ='<?php echo base_url()?>'
-                if (result[index].keyword_visible=="N") {
-                    var html = '<a onclick="activeKeywordConfirm(\''+id+'\')" href="#!" class="dropdown-item"><i class="zmdi zmdi-layers zmdi-hc-fw"></i>Activate</a>'
+                sno+=1
+                var base_url = '<?php echo base_url() ?>'
+                var html = result[index].keyword_visible == "N" 
+                    ? `<a onclick="confirmKeywordAction('${id}', 'activate')" href="#!" class="dropdown-item">
+                         <i class="zmdi zmdi-layers zmdi-hc-fw"></i>Activate
+                       </a>`
+                    : `<a onclick="confirmKeywordAction('${id}', 'deactivate')" href="#!" class="dropdown-item">
+                         <i class="zmdi zmdi-layers-off zmdi-hc-fw"></i>Deactivate
+                       </a>`
+                var tr = "<tr id='"+id+"'>"
+                tr += "<td>"+ sno +"</td>"
+                tr += "<td>"+ title +"</td>"
+                tr += "<td><div class='dropdown'><button class='btn btn-light dropdown-toggle' data-toggle='dropdown'>ACTION</button><div class='dropdown-menu dropdown-menu--icon'>"+ html +"<a href='#!' onclick='edit_keyword(\""+id+"\")' class='dropdown-item'><i class='zmdi zmdi-edit zmdi-hc-fw'></i>Edit</a></div></div></td>"
+                tr += "</tr>"
+                if (statustable == 'Y') {
+                    $('#mytablekeyword1 tbody').append(tr)
                 } else {
-                    var html = '<a onclick="inactiveKeywordConfirm(\''+id+'\')" href="#!" class="dropdown-item"><i class="zmdi zmdi-layers-off zmdi-hc-fw"></i>Deactivate</a>'
-                }
-
-                var tr = "<tr id='"+id+"'>";
-                tr += "<td>"+ sno +"</td>";
-                tr += "<td>"+ title +"</td>";
-                tr += "<td><div class='dropdown'><button class='btn btn-light dropdown-toggle' data-toggle='dropdown'>ACTION</button><div class='dropdown-menu dropdown-menu--icon'>"+ html +"<a href='#!' onclick='edit_keyword(\""+id+"\")' class='dropdown-item'><i class='zmdi zmdi-edit zmdi-hc-fw'></i>Edit</a></div></div></td>";
-                tr += "</tr>";
-                if (statustable=='Y') {
-                    $('#mytablekeyword1 tbody').append(tr);
-                } else {
-                    $('#mytablekeyword2 tbody').append(tr);
+                    $('#mytablekeyword2 tbody').append(tr)
                 }
             }
-        }
-        else
-        {
+        } else {
             var tr = `<tr class="odd"><td valign="top" colspan="3" class="dataTables_empty">No matching records found</td></tr>`
-            if (statustable=='Y') {
-                $('#mytablekeyword1 tbody').append(tr);
+            if (statustable == 'Y') {
+                $('#mytablekeyword1 tbody').append(tr)
             } else {
-                $('#mytablekeyword2 tbody').append(tr);
+                $('#mytablekeyword2 tbody').append(tr)
+            }
+        }
+        if (statustable == 'Y' && contentKey == 'STD') {
+            if (!$tbody.hasClass('ui-sortable')) {
+                $tbody.sortable({
+                    placeholder : 'ui-state-highlight',
+                    update: function (event, ui) {
+                        swal({
+                            title: 'Are you sure?',
+                            type: 'warning',
+                            showCancelButton: true,
+                            buttonsStyling: false,
+                            confirmButtonClass: 'btn btn-success',
+                            confirmButtonText: 'Yes',
+                            cancelButtonClass: 'btn btn-light',
+                            background: '#222323',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                var page_id_array = new Array()
+                                $('tbody tr').each(function () {
+                                    page_id_array.push($(this).attr('id'))
+                                })
+
+                                $.ajax({
+                                    url: '<?=base_url()?>movies/update_sort',
+                                    method: 'POST',
+                                    data: {page_id_array: page_id_array, action: 'update'},
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        swal({
+                                            title: response.error === '0' ? 'Success' : 'Failed',
+                                            text: response.message,
+                                            type: response.error === '0' ? 'success' : 'error',
+                                            buttonsStyling: false,
+                                            confirmButtonClass: 'btn btn-light',
+                                            background: '#222323',
+                                            allowOutsideClick: false,
+                                            allowEscapeKey: false,
+                                        }).then(function (ok) {
+                                            if (ok && response.error === '0') {
+                                                $('.tab_keyword_active').trigger('click')
+                                            } else {
+                                                $tbody.sortable('cancel')
+                                            }
+                                        })
+                                    },
+                                    error: function () {
+                                        swal({
+                                            title: 'Failed',
+                                            text: 'Failed to process request',
+                                            type: 'error',
+                                            buttonsStyling: false,
+                                            confirmButtonClass: 'btn btn-light',
+                                            background: '#222323',
+                                            allowOutsideClick: false,
+                                            allowEscapeKey: false,
+                                        }).then(function (ok) {
+                                            if (ok) {
+                                                $tbody.sortable('cancel')
+                                            }
+                                        })
+                                    },
+                                })
+                            }
+                        }).catch(function () {
+                            $tbody.sortable('cancel')
+                        })
+                    }
+                })
+            }
+        } else {
+            if ($tbody.hasClass('ui-sortable')) {
+                $tbody.sortable('destroy')
             }
         }
     }
 
-    $(document).on("click","#add_keyword",(function(e){
-        e.preventDefault();
+    const tbody = document.getElementById('my-tbody')
+    const tooltip = document.getElementById('tbody-tooltip')
+
+    function updateTooltipVisibility() {
+        const contentKey = $('#select_keyword_active').val()
+        return contentKey === 'STD'
+    }
+
+    tbody.addEventListener('mousemove', function (e) {
+        if (!updateTooltipVisibility()) {
+            tooltip.style.display = 'none'
+            return
+        }
+        tooltip.style.left = (e.pageX + 10) + 'px' 
+        tooltip.style.top = (e.pageY + 15) + 'px'
+    })
+
+    tbody.addEventListener('mouseenter', function () {
+        if (updateTooltipVisibility()) {
+            tooltip.style.display = 'block'
+        } else {
+            tooltip.style.display = 'none'
+        }
+    })
+
+    tbody.addEventListener('mouseleave', function () {
+        tooltip.style.display = 'none'
+    })
+
+    function confirmKeywordAction(id, action) {
+        const settings = {
+            activate: {
+                url: '<?=base_url()?>movies/activate_keyword',
+                confirmText: 'Activate',
+                confirmClass: 'btn btn-success',
+                tabSelector: '.tab_keyword_active',
+            },
+            deactivate: {
+                url: '<?=base_url()?>movies/inactivate_keyword',
+                confirmText: 'Deactivate',
+                confirmClass: 'btn btn-danger',
+                tabSelector: '.tab_keyword_inactive',
+            }
+        }
+        const config = settings[action]
+        if (!config) {
+            return
+        }
+        swal({
+            title: 'Are you sure?',
+            type: 'warning',
+            showCancelButton: true,
+            buttonsStyling: false,
+            confirmButtonClass: config.confirmClass,
+            confirmButtonText: config.confirmText,
+            cancelButtonClass: 'btn btn-light',
+            background: '#222323',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: config.url,
+                    type: 'post',
+                    data: {id: id},
+                    dataType: 'json',
+                    success: function (response) {
+                        swal({
+                            title: response.error === '0' ? 'Success' : 'Failed',
+                            text: response.message,
+                            type: response.error === '0' ? 'success' : 'error',
+                            buttonsStyling: false,
+                            confirmButtonClass: 'btn btn-light',
+                            background: '#222323',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then(function (ok) {
+                            if (ok && response.error === '0') {
+                                $(config.tabSelector).trigger('click')
+                            }
+                        })
+                    },
+                    error: function() {
+                        swal({
+                            title: 'Failed',
+                            text: 'Failed to process request',
+                            type: 'error',
+                            buttonsStyling: false,
+                            confirmButtonClass: 'btn btn-light',
+                            background: '#222323',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        })
+                    },
+                })
+            }
+        })
+    }
+
+    $('#select_keyword_active').on('change', function () {
+        tooltip.style.display = updateTooltipVisibility() ? 'block' : 'none'
+    })
+
+    $(document).on("click","#add_keyword",(function (e) {
+        e.preventDefault()
         var html = `<form action="#" method="post" id="form_crud_keyword" autocomplete="off">
                         <div class="row">
                             <div class="col-md-12">
@@ -1427,24 +1746,25 @@
                             </div>
                             <input type="hidden" name="keyword_id" id="keyword_id" value="">
                         </div>`
-        $('#changing-keyword').html(html);
+        $('#changing-keyword').html(html)
 
         $('#keyword_child').select2({
             minimumResultsForSearch: Infinity,
             width: '100%',
-            dropdownParent: $('#modal-keyword-cu')
+            dropdownParent: $('#modal-keyword-cu'),
+            dropdownCssClass: 'keyword-select2-dark'
         })
 
         $('#keyword_ref').select2({
             minimumResultsForSearch: Infinity,
             width: '100%',
-            dropdownParent: $('#modal-keyword-cu')
+            dropdownParent: $('#modal-keyword-cu'),
+            dropdownCssClass: 'keyword-select2-dark'
         })
 
         $('#keyword_ref').on('select2:select', function (e) {
             var ref = $('#keyword_ref').val()
-            if (ref=='SUBGEN')
-            {
+            if (ref == 'SUBGEN') {
                 $('#genreforsubgenre').css('display', 'block')
                 $('#genre_id').select2({
                     ajax: {
@@ -1456,22 +1776,22 @@
                             return {
                                 searchTerm: params.term,
                                 page: params.page,
-                            };
+                            }
                         },
                         processResults: function (data, params) {
-                            params.page = params.page || 1;
+                            params.page = params.page || 1
                             return {
-                                results: data.items.map(function(item) {
+                                results: data.items.map(function (item) {
                                     return {
                                         id: item.keyword_id,
                                         text: item.keyword_name.trim()
-                                    };
+                                    }
                                 }),
                                 pagination: {
                                     more: (params.page * 10) < data.total_count
                                 }
 
-                            };
+                            }
                         },
                         cache: true
                     },
@@ -1479,86 +1799,17 @@
                     minimumResultsForSearch: Infinity,
                     width: '100%',
                     dropdownParent: $('#modal-keyword-cu'),
+                    dropdownCssClass: 'keyword-select2-dark',
                     templateResult: format,
                     templateSelection: formatSelection
                 })
-            }
-            else
-            {
+            } else {
                 $('#genreforsubgenre').css('display', 'none')
-                $('#genre_id').val(null).trigger('change');
+                $('#genre_id').val(null).trigger('change')
             }
         })
-
-        $('#modal-keyword-cu').modal('show');
+        $('#modal-keyword-cu').modal('show')
     }))
-
-    $("#crud_keyword").click(function(){
-        var self = $('#form_crud_keyword');
-        var keyname_res = $(self).find('#keyword_name').val();
-        var keychild_res = $(self).find('#keyword_child').val();
-        var keyref_res = $(self).find('#keyword_ref').val();
-        var genid_res = $(self).find('#genre_id').val();
-        if (keyname_res == '' || keyname_res == null) {
-            $('#keyname_val').text('* Please input name');
-            $('#keyname_val').show()
-        } else {
-            $("#keyname_val").hide();
-        }
-        if (keychild_res == '' || keychild_res == null) {
-            $('#child_val').text('* Please select child');
-            $('#child_val').show()
-        } else {
-            $("#child_val").hide();
-        }
-        if (keyref_res == '' || keyref_res == null) {
-            $('#ref_val').text('* Please select ref');
-            $('#ref_val').show()
-        } else {
-            $("#ref_val").hide();
-        }
-        if (keyref_res=='SUBGEN') {
-            if (genid_res == '' || genid_res == null) {
-                $('#genre_val').text('* Please select genre');
-                return $('#genre_val').show()
-            } else {
-                $("#genre_val").hide();
-            }
-        }
-
-        if (keyname_res!='' && keychild_res!='' && keyref_res!='') {
-            $('#crud_keyword').text('Submit...'); //change button text
-            $('#crud_keyword').attr('disabled',true); //set button disable
-            // ajax adding data to database
-            $.ajax({
-                url : "<?php echo site_url('movies/cu_keyword')?>",
-                type: "POST",
-                data: $('#form_crud_keyword').serialize(),
-                dataType: "JSON",
-                success: function(data)
-                {
-                    if(data.error==='0')
-                    {
-                        alert(data.message);
-                        $('#crud_keyword').text('Submit');
-                        $('#crud_keyword').attr('disabled',false);
-                        $('#modal-keyword-cu').modal('hide');
-                        $(".tab_keyword_active").trigger('click');
-                    }else{
-                        $('#crud_keyword').text('Submit');
-                        $('#crud_keyword').attr('disabled',false);
-                        alert(data.message);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert('Data gagal disimpan, silahkan isi category!');
-                    $('#crud_keyword').text('Submit');
-                    $('#crud_keyword').attr('disabled',false);
-                }
-            });
-        }
-    });
 
     function edit_keyword(id) {
         var html = `<form action="#" method="post" id="form_crud_keyword" autocomplete="off">
@@ -1603,23 +1854,25 @@
                             </div>
                             <input type="hidden" name="keyword_id" id="keyword_id" value="${id}">
                         </div>`
-        $('#changing-keyword').html(html);
+        $('#changing-keyword').html(html)
 
         $('#keyword_child').select2({
             minimumResultsForSearch: Infinity,
             width: '100%',
-            dropdownParent: $('#modal-keyword-cu')
+            dropdownParent: $('#modal-keyword-cu'),
+            dropdownCssClass: 'keyword-select2-dark'
         })
 
         $('#keyword_ref').select2({
             minimumResultsForSearch: Infinity,
             width: '100%',
-            dropdownParent: $('#modal-keyword-cu')
+            dropdownParent: $('#modal-keyword-cu'),
+            dropdownCssClass: 'keyword-select2-dark'
         })
 
         $('#keyword_ref').on('select2:select', function (e) {
             var ref = $('#keyword_ref').val()
-            if (ref=='SUBGEN')
+            if (ref == 'SUBGEN')
             {
                 $('#genreforsubgenre').css('display', 'block')
                 $('#genre_id').select2({
@@ -1632,22 +1885,22 @@
                             return {
                                 searchTerm: params.term,
                                 page: params.page,
-                            };
+                            }
                         },
                         processResults: function (data, params) {
-                            params.page = params.page || 1;
+                            params.page = params.page || 1
                             return {
-                                results: data.items.map(function(item) {
+                                results: data.items.map(function (item) {
                                     return {
                                         id: item.keyword_id,
                                         text: item.keyword_name.trim()
-                                    };
+                                    }
                                 }),
                                 pagination: {
                                     more: (params.page * 10) < data.total_count
                                 }
 
-                            };
+                            }
                         },
                         cache: true
                     },
@@ -1655,6 +1908,7 @@
                     minimumResultsForSearch: Infinity,
                     width: '100%',
                     dropdownParent: $('#modal-keyword-cu'),
+                    dropdownCssClass: 'keyword-select2-dark',
                     templateResult: format,
                     templateSelection: formatSelection
                 })
@@ -1662,28 +1916,28 @@
             else
             {
                 $('#genreforsubgenre').css('display', 'none')
-                $('#genre_id').val(null).trigger('change');
+                $('#genre_id').val(null).trigger('change')
             }
         })
 
         $.ajax({
-            url : "<?php echo site_url('movies/get_data_edit_keyword');?>",
+            url : "<?php echo site_url('movies/get_data_edit_keyword') ?>",
             method : "POST",
             data :{id:id},
             async : true,
             dataType : 'json',
-            success : function(data){
+            success : function (data) {
                 var val_name = data[0]['keyword_name']
                 var val_child = data[0]['keyword_child']
                 var val_ref = data[0]['keyword_ref']
                 var val_genreid = data[0]['keyword_parentid']
-                $('#form_crud_keyword [name="keyword_name"]').val(val_name).trigger('change');
-                $('#form_crud_keyword [name="keyword_child"]').val(val_child).trigger('change');
-                $('#form_crud_keyword [name="keyword_ref"]').val(val_ref).trigger('change');
-                if (val_ref=='GEN') {
-                    if (val_genreid!='' || val_genreid!=null) {
+                $('#form_crud_keyword [name="keyword_name"]').val(val_name).trigger('change')
+                $('#form_crud_keyword [name="keyword_child"]').val(val_child).trigger('change')
+                $('#form_crud_keyword [name="keyword_ref"]').val(val_ref).trigger('change')
+                if (val_ref == 'GEN') {
+                    if (val_genreid != '' || val_genreid != null) {
                         $('#genreforsubgenre').css('display', 'block')
-                        $('#form_crud_keyword [name="keyword_ref"]').val('SUBGEN').trigger('change');
+                        $('#form_crud_keyword [name="keyword_ref"]').val('SUBGEN').trigger('change')
                         $('#genre_id').select2({
                             ajax: {
                                 url: '<?= base_url() ?>movies/get_list_genre',
@@ -1694,22 +1948,22 @@
                                     return {
                                         searchTerm: params.term,
                                         page: params.page,
-                                    };
+                                    }
                                 },
                                 processResults: function (data, params) {
-                                    params.page = params.page || 1;
+                                    params.page = params.page || 1
                                     return {
-                                        results: data.items.map(function(item) {
+                                        results: data.items.map(function (item) {
                                             return {
                                                 id: item.keyword_id,
                                                 text: item.keyword_name.trim()
-                                            };
+                                            }
                                         }),
                                         pagination: {
                                             more: (params.page * 10) < data.total_count
                                         }
 
-                                    };
+                                    }
                                 },
                                 cache: true
                             },
@@ -1717,20 +1971,119 @@
                             minimumResultsForSearch: Infinity,
                             width: '100%',
                             dropdownParent: $('#modal-keyword-cu'),
+                            dropdownCssClass: 'keyword-select2-dark',
                             templateResult: format,
                             templateSelection: formatSelection
                         })
                         var id_parent = data[0]['id_parent']
                         var name_parent = data[0]['name_parent']
-                        var str='';
-                        str+='<option value = "'+id_parent+'" selected >'+name_parent+'</option>';
-                        $("#genre_id").append(str);
+                        var str = ''
+                        str+='<option value = "'+id_parent+'" selected >'+name_parent+'</option>'
+                        $("#genre_id").append(str)
                     }
                 }
             }
-        });
-        $('#modal-keyword-cu').modal('show');
+        })
+        $('#modal-keyword-cu').modal('show')
     }
+
+    $("#crud_keyword").click(function () {
+        var self = $('#form_crud_keyword')
+        var keyname_res = $(self).find('#keyword_name').val()
+        var keychild_res = $(self).find('#keyword_child').val()
+        var keyref_res = $(self).find('#keyword_ref').val()
+        var genid_res = $(self).find('#genre_id').val()
+        if (keyname_res == '' || keyname_res == null) {
+            $('#keyname_val').text('* Please input name')
+            $('#keyname_val').show()
+        } else {
+            $("#keyname_val").hide()
+        }
+        if (keychild_res == '' || keychild_res == null) {
+            $('#child_val').text('* Please select child')
+            $('#child_val').show()
+        } else {
+            $("#child_val").hide()
+        }
+        if (keyref_res == '' || keyref_res == null) {
+            $('#ref_val').text('* Please select ref')
+            $('#ref_val').show()
+        } else {
+            $("#ref_val").hide()
+        }
+        if (keyref_res=='SUBGEN') {
+            if (genid_res == '' || genid_res == null) {
+                $('#genre_val').text('* Please select genre')
+                return $('#genre_val').show()
+            } else {
+                $("#genre_val").hide()
+            }
+        }
+        if (keyname_res != '' && keychild_res != '' && keyref_res != '') {
+            $('#crud_keyword').text('Submit...')
+            $('#crud_keyword').attr('disabled', true)
+            swal({
+                title: 'Are you sure?',
+                type: 'warning',
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonClass: 'btn btn-success',
+                confirmButtonText: 'Yes',
+                cancelButtonClass: 'btn btn-light',
+                background: '#222323',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then(function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: '<?php echo site_url("movies/cu_keyword") ?>',
+                        type: 'post',
+                        data: $('#form_crud_keyword').serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            swal({
+                                title: response.error === '0' ? 'Success' : 'Failed',
+                                text: response.message,
+                                type: response.error === '0' ? 'success' : 'error',
+                                buttonsStyling: false,
+                                confirmButtonClass: 'btn btn-light',
+                                background: '#222323',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then(function (ok) {
+                                if (ok && response.error === '0') {
+                                    $('#crud_keyword').text('Submit')
+                                    $('#crud_keyword').attr('disabled', false)
+                                    $('#modal-keyword-cu').modal('hide')
+                                    $(".tab_keyword_active").trigger('click')
+                                } else {
+                                    $('#crud_keyword').text('Submit')
+                                    $('#crud_keyword').attr('disabled', false)
+                                }
+                            })
+                        },
+                        error: function () {
+                            swal({
+                                title: 'Failed',
+                                text: 'Failed to process request',
+                                type: 'error',
+                                buttonsStyling: false,
+                                confirmButtonClass: 'btn btn-light',
+                                background: '#222323',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then(function (ok) {
+                                if (ok && response.error === '0') {
+                                    $('#crud_keyword').text('Submit')
+                                    $('#crud_keyword').attr('disabled', false)
+                                }
+                            })
+                        },
+                    })
+                }
+            })
+        }
+    })
     // management keyword
 
     var selectedMovieCode = <?= json_encode($selected_movie_code ?? '') ?>;

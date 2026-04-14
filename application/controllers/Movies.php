@@ -44,7 +44,7 @@ class Movies extends CI_Controller {
                 "text"=>$row['keyword_name']
             );
         }
-        if (empty($page) || $page==1) {
+        if (empty($page) || $page == 1) {
             $hc = array(
                 array(
                     "id" => -1,
@@ -63,12 +63,8 @@ class Movies extends CI_Controller {
         if ($rowno != 0) {
             $rowno = ($rowno-1) * $rowperpage;
         }
-        
         $allcount = $this->Movie_model->getCountAll($key_search, $visible, $category);
-
         $users_record = $this->Movie_model->getDatas($key_search, $sort_by, $order_sort, $visible, $category, $rowperpage, $rowno);
-        
-        // Pagination Configuration
         $config['base_url'] = base_url().'movies/list_movies/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$category.'/'.$rowperpage.'/'.$rowno;
         $config['use_page_numbers'] = TRUE;
         $config['total_rows'] = $allcount;
@@ -87,44 +83,69 @@ class Movies extends CI_Controller {
         $config['first_tagl_close'] = '</span></li>';
         $config['last_tag_open'] = '<li class="page-item"><span class="page-link">';
         $config['last_tagl_close'] = '</span></li>';
-
         $this->pagination->initialize($config);
-
         $data['z'] = $config['total_rows'];
-
         $data['x'] = (int)$rowno + 1;
-
         if ($rowno + $config['per_page'] > $config['total_rows']) {
             $data['y'] = $config['total_rows'];
         } else {
             $data['y'] = (int)$rowno + $config['per_page'];
         }
-
-        // Initialize $data Array
         $data['pagination'] = $this->pagination->create_links();
         $data['result'] = $users_record;
         $data['row'] = $rowno;
         $data['order'] = $order_sort;
-
         echo json_encode($data);
     }
 
-    public function activated_movie($id)
+    public function activated_movie()
     {
-        if (!isset($id)) show_404();
-        
-        if ($this->Movie_model->activated_movie($id)) {
-            redirect(site_url('movies'));
+        $id = $this->input->post('id');
+        if (empty($id) || !isset($id)) {
+            $results = array(
+                'error' => '1',
+                'message' => 'Failed to activate the code.'
+            );
+        } else {
+            $active = $this->Movie_model->activated_movie($id);
+            if ($active != true) {
+                $results = array(
+                    'error' => '1',
+                    'message' => 'Failed to activate movie.'
+                );
+            } else {
+                $results = array(
+                    'error' => '0',
+                    'message' => 'Movie has been successfully activated.'
+                );
+            }
         }
+        echo json_encode($results);
     }
 
-    public function inactivated_movie($id)
+    public function inactivated_movie()
     {
-        if (!isset($id)) show_404();
-        
-        if ($this->Movie_model->inactivated_movie($id)) {
-            redirect(site_url('movies'));
+        $id = $this->input->post('id');
+        if (empty($id) || !isset($id)) {
+            $results = array(
+                'error' => '1',
+                'message' => 'Failed to activate the code.'
+            );
+        } else {
+            $inactive = $this->Movie_model->inactivated_movie($id);
+            if ($inactive != true) {
+                $results = array(
+                    'error' => '1',
+                    'message' => 'Failed to deactivate the movie.'
+                );
+            } else {
+                $results = array(
+                    'error' => '0',
+                    'message' => 'Movie has been successfully deactivated.'
+                );
+            }
         }
+        echo json_encode($results);
     }
 
     public function get_list_movie_code()
@@ -213,15 +234,12 @@ class Movies extends CI_Controller {
     public function get_single_movie_parent()
     {
         $id = $this->input->post('id');
-
-        // Simulasi label dari ID yang dikirim
         $labels = array(
             'STD' => 'Studio',
             'SER' => 'Series',
             'SEA' => 'Season',
             'DPL' => 'DensPlay'
         );
-
         $response = [];
         if (array_key_exists($id, $labels)) {
             $response = [
@@ -229,7 +247,6 @@ class Movies extends CI_Controller {
                 'text' => $labels[$id]
             ];
         }
-
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
@@ -256,16 +273,13 @@ class Movies extends CI_Controller {
     {
         $id = $this->input->post('id');
         $parent = $this->input->post('movie_parent');
-
         if (!$id || !$parent) {
             $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode([]));
             return;
         }
-
         $data = $this->Movie_model->get_single_movie_parent_id($id, $parent);
-
         if ($data) {
             $result = [
                 'id' => $data['id'],
@@ -274,7 +288,6 @@ class Movies extends CI_Controller {
         } else {
             $result = [];
         }
-
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($result));
@@ -342,10 +355,10 @@ class Movies extends CI_Controller {
         return $result;
     }
 
-    public function create() {
+    public function create()
+    {
         $CI =& get_instance();
         $data['title'] = 'Add Movie';
-
         $this->form_validation->set_rules('movie_code', 'Movie Code', 'required', ['required' => 'Movie Code harus dipilih']);
         $this->form_validation->set_rules('movie_type', 'Movie Type', 'required', ['required' => 'Movie Type harus dipilih']);
         $this->form_validation->set_rules('movie_parent', 'Movie Parent', 'required', ['required' => 'Movie Parent harus dipilih']);
@@ -362,7 +375,6 @@ class Movies extends CI_Controller {
         ]);
         $this->form_validation->set_rules('parental_guide', 'Parental Guide', 'required', ['required' => 'Parental Guide harus diisi']);
         $this->form_validation->set_rules('publish_date', 'Publish Date', 'required', ['required' => 'Publish Date harus dipilih']);
-
         if ($this->form_validation->run() == FALSE) {
             $data['selected_movie_code'] = set_value('movie_code');
             $data['selected_movie_parent'] = set_value('movie_parent');
@@ -421,15 +433,14 @@ class Movies extends CI_Controller {
         }
     }
 
-    public function edit($id = null) {
+    public function edit($id = null)
+    {
         $CI =& get_instance();
         if (!$id) show_404();
         $movie = $this->Movie_model->get_movie_by_id($id);
         if (!$movie) show_404();
-
         $data['title'] = 'Edit Movie';
         $data['movie'] = $movie[0];
-
         $this->form_validation->set_rules('movie_code', 'Movie Code', 'required', ['required' => 'Movie Code harus dipilih']);
         $this->form_validation->set_rules('movie_type', 'Movie Type', 'required', ['required' => 'Movie Type harus dipilih']);
         $this->form_validation->set_rules('movie_parent', 'Movie Parent', 'required', ['required' => 'Movie Parent harus dipilih']);
@@ -446,7 +457,6 @@ class Movies extends CI_Controller {
         ]);
         $this->form_validation->set_rules('parental_guide', 'Parental Guide', 'required', ['required' => 'Parental Guide harus diisi']);
         $this->form_validation->set_rules('publish_date', 'Publish Date', 'required', ['required' => 'Publish Date harus dipilih']);
-
         if ($this->form_validation->run() == FALSE) {
             $data['selected_movie_code'] = set_value('movie_code');
             $data['selected_movie_parent'] = set_value('movie_parent');
@@ -512,71 +522,53 @@ class Movies extends CI_Controller {
         }
     }
 
-    public function list_movie_code($key_search=null, $sort_by='code_id', $order_sort='asc', $visible='Y', $rowno=0)
+    public function list_movie_code($key_search=null, $sort_by='code_id', $order_sort='asc', $visible='Y', $rowperpage, $rowno=0)
     {
-        // Row per page
-        $rowperpage = 10;
-
-        // Row position
+        if ($rowperpage == null) {
+            $rowperpage = 10;
+        }
         if ($rowno != 0) {
             $rowno = ($rowno-1) * $rowperpage;
         }
-
         if ($sort_by == 'null') {
             $sort_by='code_id';
         }
-
         if ($order_sort == 'null') {
             $order_sort='DESC';
         }
-
         $key_search = urldecode($key_search);
-        
-        // All records count
-        $allcount = $this->Movie_model->getListCodeCount($key_search,$visible);
-
-        // Get  records
+        $allcount = $this->Movie_model->getListCodeCount($key_search, $visible);
         $users_record = $this->Movie_model->getDataListCode($rowno,$rowperpage,$order_sort,$sort_by,$key_search,$visible);
-        
-        // Pagination Configuration
-        $config['base_url'] = base_url().'movies/list_movie_code/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$rowno;
+        $config['base_url'] = base_url().'movies/list_movie_code/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$rowperpage.'/'.$rowno;
         $config['use_page_numbers'] = TRUE;
         $config['total_rows'] = $allcount;
         $config['per_page'] = $rowperpage;
-        $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination justify-content-center">';
-        $config['full_tag_close']   = '</ul></nav></div>';
-        $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
-        $config['num_tag_close']    = '</span></li>';
-        $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
-        $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
-        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['prev_tagl_close']  = '</span>Next</li>';
-        $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
+        $config['full_tag_open'] = '<div class="pagging text-center"><nav><ul class="pagination justify-content-center">';
+        $config['full_tag_close'] = '</ul></nav></div>';
+        $config['num_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['num_tag_close'] = '</span></li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close'] = '<span class="sr-only">(current)</span></span></li>';
+        $config['next_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['next_tagl_close'] = '<span aria-hidden="true">&raquo;</span></span></li>';
+        $config['prev_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['prev_tagl_close'] = '</span>Next</li>';
+        $config['first_tag_open'] = '<li class="page-item"><span class="page-link">';
         $config['first_tagl_close'] = '</span></li>';
-        $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['last_tagl_close']  = '</span></li>';
-
-        // Initialize
+        $config['last_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['last_tagl_close'] = '</span></li>';
         $this->pagination->initialize($config);
-
         $data['z'] = $config['total_rows'];
-
         $data['x'] = (int)$rowno + 1;
-
         if ($rowno + $config['per_page'] > $config['total_rows']) {
             $data['y'] = $config['total_rows'];
         } else {
             $data['y'] = (int)$rowno + $config['per_page'];
         }
-
-        // Initialize $data Array
         $data['pagination'] = $this->pagination->create_links();
         $data['result'] = $users_record;
         $data['row'] = $rowno;
         $data['order'] = $order_sort;
-
         echo json_encode($data);
     }
 
@@ -623,7 +615,7 @@ class Movies extends CI_Controller {
     {
         $id = $this->input->post('id',TRUE);
         $code = $this->Movie_model->get_data_edit_code($id);
-        if ($code!=null) {
+        if ($code != null) {
             $data = $code;
         } else {
             die("Data not found");
@@ -636,9 +628,8 @@ class Movies extends CI_Controller {
         $code_id = $this->input->post('code_id');
         $initial_code = $this->input->post('initial_code');
         $remark = $this->input->post('remark');
-        
         $update = $this->Movie_model->update_code($code_id,$initial_code,$remark);
-        if ($update==true) {
+        if ($update == true) {
             $results = array(
                 'error' => '0',
                 'message' => 'Data berhasil disimpan'
@@ -652,20 +643,43 @@ class Movies extends CI_Controller {
         echo json_encode($results);
     }
 
-    public function activate_code()
+    public function codeCreateUpdate()
     {
-        $id = $this->input->post('id');
-
-        $inactive = $this->Movie_model->activate_code($id);
-        if ($inactive==true) {
+        $initial_code = $this->input->post('initial_code');
+        $remark = $this->input->post('remark');
+        $code_id = $this->input->post('code_id');
+        if ($code_id == null || $code_id == "") {
+            $cu = $this->Movie_model->codeCreateUpdate($initial_code, $remark, $code_id, 'create');
+        } else {
+            $cu = $this->Movie_model->codeCreateUpdate($initial_code, $remark, $code_id, 'update');
+        }
+        if ($cu['status'] == true) {
             $results = array(
                 'error' => '0',
-                'message' => 'Data berhasil disimpan'
+                'message' => $cu['message']
             );
         } else {
             $results = array(
                 'error' => '1',
-                'message' => 'Data gagal disimpan'
+                'message' => $cu['message']
+            );
+        }
+        echo json_encode($results);
+    }
+
+    public function activate_code()
+    {
+        $id = $this->input->post('id');
+        $inactive = $this->Movie_model->activate_code($id);
+        if ($inactive == true) {
+            $results = array(
+                'error' => '0',
+                'message' => 'The code has been successfully activated.'
+            );
+        } else {
+            $results = array(
+                'error' => '1',
+                'message' => 'Failed to activate the code.'
             );
         }
         echo json_encode($results);
@@ -674,17 +688,16 @@ class Movies extends CI_Controller {
     public function inactivate_code()
     {
         $id = $this->input->post('id');
-
         $inactive = $this->Movie_model->inactivate_code($id);
-        if ($inactive==true) {
+        if ($inactive == true) {
             $results = array(
                 'error' => '0',
-                'message' => 'Data berhasil disimpan'
+                'message' => 'The code has been successfully deactivated.'
             );
         } else {
             $results = array(
                 'error' => '1',
-                'message' => 'Data gagal disimpan'
+                'message' => 'Failed to deactivate the code.'
             );
         }
         echo json_encode($results);
@@ -692,49 +705,33 @@ class Movies extends CI_Controller {
 
     public function update_sort()
     {
-        if (isset($_POST["action"])) {
-            if ($_POST['action'] == 'update') {
-                for ($count = 0;  $count < count($_POST["page_id_array"]); $count++) {
-                   $query = "
-                   UPDATE keywords 
-                   SET keyword_sort = '".($count+1)."' 
-                   WHERE keyword_id = '".$_POST["page_id_array"][$count]."'
-                   ";
-                   $data = $this->Movie_model->update_sort($query);
-                }
-            }
+        $page_id_array = $this->input->post('page_id_array');
+        $action = $this->input->post('action');
+        if (!$page_id_array || $action != 'update') {
+            echo json_encode(['error' => '1', 'message' => 'Invalid request']);
+            return;
         }
+        $result = $this->Movie_model->update_sort($page_id_array);
+        echo json_encode($result);
     }
 
     public function list_movie_keyword($key_search=null, $sort_by='keyword_id', $order_sort='asc', $visible='Y', $contentKey=null, $rowperpage, $rowno=0)
     {
-        // Row per page
-        if ($rowperpage==null) {
+        if ($rowperpage == null) {
             $rowperpage = 10;
         }
-
-        // Row position
         if ($rowno != 0) {
             $rowno = ($rowno-1) * $rowperpage;
         }
-
         if ($sort_by == 'null') {
             $sort_by='keyword_id';
         }
-
         if ($order_sort == 'null') {
             $order_sort='DESC';
         }
-
         $key_search = urldecode($key_search);
-        
-        // All records count
-        $allcount = $this->Movie_model->getListKeywordCount($key_search,$visible,$contentKey);
-
-        // Get  records
-        $users_record = $this->Movie_model->getDataListKeyword($rowno,$rowperpage,$order_sort,$sort_by,$key_search,$visible,$contentKey);
-        
-        // Pagination Configuration
+        $allcount = $this->Movie_model->getListKeywordCount($key_search, $visible, $contentKey);
+        $users_record = $this->Movie_model->getDataListKeyword($rowno, $rowperpage, $order_sort, $sort_by, $key_search, $visible, $contentKey);
         $config['base_url'] = base_url().'movies/list_movie_keyword/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$contentKey.'/'.$rowperpage.'/'.$rowno;
         $config['use_page_numbers'] = TRUE;
         $config['total_rows'] = $allcount;
@@ -753,26 +750,18 @@ class Movies extends CI_Controller {
         $config['first_tagl_close'] = '</span></li>';
         $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
         $config['last_tagl_close']  = '</span></li>';
-
-        // Initialize
         $this->pagination->initialize($config);
-
         $data['z'] = $config['total_rows'];
-
         $data['x'] = (int)$rowno + 1;
-
         if ($rowno + $config['per_page'] > $config['total_rows']) {
             $data['y'] = $config['total_rows'];
         } else {
             $data['y'] = (int)$rowno + $config['per_page'];
         }
-
-        // Initialize $data Array
         $data['pagination'] = $this->pagination->create_links();
         $data['result'] = $users_record;
         $data['row'] = $rowno;
         $data['order'] = $order_sort;
-
         echo json_encode($data);
     }
 
@@ -786,7 +775,6 @@ class Movies extends CI_Controller {
         }
         $data = $this->Movie_model->get_list_genre($perPage, $page, $searchTerm, 'data');
         $countResults = $this->Movie_model->get_list_genre($perPage, $page, $searchTerm, 'count');
-        
         $select['total_count'] = $countResults;
         $select['items'] = $data;
         $this->output->set_content_type('application/json')->set_output(json_encode($select));
@@ -799,21 +787,20 @@ class Movies extends CI_Controller {
         $keyword_ref = $this->input->post('keyword_ref');
         $genre_id = $this->input->post('genre_id');
         $keyword_id = $this->input->post('keyword_id');
-        if ($keyword_id==null || $keyword_id=="") {
-            $cu = $this->Movie_model->cu_keyword($keyword_id,$keyword_name,$keyword_child,$keyword_ref,$genre_id,'create');
+        if ($keyword_id == null || $keyword_id == "") {
+            $cu = $this->Movie_model->cu_keyword($keyword_id, $keyword_name, $keyword_child, $keyword_ref, $genre_id, 'create');
         } else {
-            $cu = $this->Movie_model->cu_keyword($keyword_id,$keyword_name,$keyword_child,$keyword_ref,$genre_id,'update');
+            $cu = $this->Movie_model->cu_keyword($keyword_id, $keyword_name, $keyword_child, $keyword_ref, $genre_id, 'update');
         }
-
-        if ($cu==true) {
+        if ($cu['status'] == true) {
             $results = array(
                 'error' => '0',
-                'message' => 'Data berhasil disimpan'
+                'message' => $cu['message']
             );
         } else {
             $results = array(
                 'error' => '1',
-                'message' => 'Data gagal disimpan'
+                'message' => $cu['message']
             );
         }
         echo json_encode($results);
@@ -831,10 +818,46 @@ class Movies extends CI_Controller {
         echo json_encode($data);
     }
 
-    public function create_edit_poster_stream($movie_id=null, $movie_type=null) {
+    public function activate_keyword()
+    {
+        $id = $this->input->post('id');
+        $inactive = $this->Movie_model->activate_keyword($id);
+        if ($inactive == true) {
+            $results = array(
+                'error' => '0',
+                'message' => 'The keyword has been successfully activated.'
+            );
+        } else {
+            $results = array(
+                'error' => '1',
+                'message' => 'Failed to activate the keyword.'
+            );
+        }
+        echo json_encode($results);
+    }
+
+    public function inactivate_keyword()
+    {
+        $id = $this->input->post('id');
+        $inactive = $this->Movie_model->inactivate_keyword($id);
+        if ($inactive == true) {
+            $results = array(
+                'error' => '0',
+                'message' => 'The keyword has been successfully deactivated.'
+            );
+        } else {
+            $results = array(
+                'error' => '1',
+                'message' => 'Failed to deactivate the keyword.'
+            );
+        }
+        echo json_encode($results);
+    }
+
+    public function create_edit_poster_stream($movie_id=null, $movie_type=null)
+    {
         if (!$movie_id) show_404();
         if (!$movie_type) show_404();
-
         $data['title'] = 'Manage Poster & Stream';
         $data['movie_id'] = $movie_id;
         $data['movie_type'] = $movie_type;
@@ -848,7 +871,7 @@ class Movies extends CI_Controller {
     {
         $movie_id = $this->input->post('movie_id',TRUE);
         $movie = $this->Movie_model->get_data_poster_stream($movie_id);
-        if ($movie!=null) {
+        if ($movie != null) {
             $data = $movie;
         } else {
             die("Data not found");
@@ -861,10 +884,8 @@ class Movies extends CI_Controller {
         $duration = $this->input->post('duration');
         $movie_id = $this->input->post('movie_id');
         $movie_type = $this->input->post('movie_type');
-
         date_default_timezone_set("Asia/Jakarta"); 
         $time = date('Y-m-d H:i:s');
-
         $check_movie_id = $this->Movie_model->check_movie_id($movie_id);
         if ($check_movie_id['num_rows'] <= 0) {
             $response = array(
@@ -872,23 +893,12 @@ class Movies extends CI_Controller {
                 'msg' => 'Error',
             );
         } else {
-            $vod_sizes = array(
-                '1280x720',
-                '410x230',
-                '235x132',
-                '549x825',
-                '183x275',
-                '170x252',
-                '122x182'
-            );
-
+            $vod_sizes = array('1280x720', '410x230', '235x132', '549x825', '183x275', '170x252', '122x182');
             foreach ($vod_sizes as $size) {
                 $url_key = 'url_vod_' . $size;
                 $id_key  = 'id_vod_' . $size;
-
                 $url = $this->input->post($url_key);
                 $id  = $this->input->post($id_key);
-
                 $data_poster = array(
                     'poster_type' => 'vod_' . $size,
                     'poster_url' => $url,
@@ -896,16 +906,12 @@ class Movies extends CI_Controller {
                     'product_id' => $check_movie_id['movie_code'],
                     'poster_update' => $time,
                 );
-
                 if (!empty($id)) {
-                    // update poster exist
                     $this->Movie_model->update_poster_exist($id, $data_poster);
                 } else {
-                    // insert poster baru
                     $this->Movie_model->insert_poster_new($data_poster);
                 }
             }
-
             if ($movie_type == 'SIN') {
                 $streams = array(
                     'web' => array(
@@ -959,17 +965,13 @@ class Movies extends CI_Controller {
                         'screen' => '701'
                     ),
                 );
-
                 foreach ($streams as $platform => $data) {
                     $stream_id  = trim($data['id']);
                     $stream_url = trim($data['url']);
                     $stream_screen = trim($data['screen']);
-
-                    // Skip kalau URL kosong
                     if (empty($stream_url)) {
                         continue;
                     }
-
                     $data_stream = array(
                         'stream_type' => 'MOV',
                         'stream_screen' => $stream_screen,
@@ -979,12 +981,9 @@ class Movies extends CI_Controller {
                         'stream_pass' => '0',
                         'stream_url' => $stream_url,
                     );
-
                     if (!empty($stream_id)) {
-                        // update streams
                         $this->Movie_model->update_stream_exist($stream_id, $data_stream);
                     } else {
-                        // insert streams
                         $this->Movie_model->insert_stream_new($data_stream);
                     }
                 }
@@ -1008,8 +1007,6 @@ class Movies extends CI_Controller {
         $data = array();
         $_arrFolder = array();
         $_urlimage = array();
-
-        //formed array from server
         $path = 'poster/files/lands/vod_235x132/';
         $changeDir = 'poster/files/lands/vod_235x132/';
         $listimg = $this->libadapter->getImages($path, $changeDir);
@@ -1020,15 +1017,12 @@ class Movies extends CI_Controller {
                 $_arrFolder[] = $value['url'];
             }
             krsort($_arrFolder);
-
-            //formed array from database
             $urlimage = $this->Movie_model->getimagelandcape();
-            if ($urlimage!=null) {
+            if ($urlimage != null) {
                 foreach ($urlimage as $key => $value) {
                     array_push($_urlimage, self::$baseurlimage . $path . basename($value['poster_url']));
                 }
             }
-
             $datas=array_values(array_diff($_arrFolder,$_urlimage));
             $data = array_slice($datas,0,10);
             $results = array(
@@ -1056,8 +1050,6 @@ class Movies extends CI_Controller {
         $data = array();
         $_arrFolder = array();
         $_urlimage = array();
-
-        //formed array from server
         $path = 'poster/files/port/vod_122x182/';
         $changeDir = 'poster/files/port/vod_122x182/';
         $listimg = $this->libadapter->getImages($path, $changeDir);
@@ -1068,15 +1060,12 @@ class Movies extends CI_Controller {
                 $_arrFolder[] = $value['url'];
             }
             krsort($_arrFolder);
-
-            //formed array from database
             $urlimage = $this->Movie_model->getimageportrait();
-            if ($urlimage!=null) {
+            if ($urlimage != null) {
                 foreach ($urlimage as $key => $value) {
                     array_push($_urlimage, self::$baseurlimage . $path . basename($value['poster_url']));
                 }
             }
-
             $datas=array_values(array_diff($_arrFolder,$_urlimage));
             $data = array_slice($datas,0,10);
             $results = array(
