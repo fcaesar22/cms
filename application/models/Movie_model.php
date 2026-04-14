@@ -13,7 +13,7 @@ class Movie_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('keywords');
         if ($type == 'data') {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('keyword_name', $searchTerm);
             }
             $this->db->where('keyword_visible', 'Y');
@@ -23,7 +23,7 @@ class Movie_model extends CI_Model {
             $this->db->limit($perPage, $page);
             return $this->db->get()->result_array();
         } else {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('keyword_name', $searchTerm);
             }
             $this->db->where('keyword_visible', 'Y');
@@ -37,10 +37,10 @@ class Movie_model extends CI_Model {
     {
         $this->db->select('movie_id');
         $this->db->from('movies');
-        if ($category!='null' && $category != '-1') {
+        if ($category != 'null' && $category != '-1') {
             $this->db->like('movie_keywords', $category);
         }
-        if ($key_search!='null') {
+        if ($key_search != 'null') {
             $this->db->like('movie_title', $key_search);
             $this->db->or_like('movie_code', $key_search);
         }
@@ -51,20 +51,75 @@ class Movie_model extends CI_Model {
 
     public function getDatas($key_search, $sort_by, $order_sort, $visible, $category, $rowperpage, $rowno)
     {
+        $data = array();
         $this->db->select('*');
         $this->db->from('movies');
-        if ($category!='null' && $category != '-1') {
+        if ($category != 'null' && $category != '-1') {
             $this->db->like('movie_keywords', $category);
         }
-        if ($key_search!='null') {
+        if ($key_search != 'null') {
+            $this->db->group_start();
             $this->db->like('movie_title', $key_search);
             $this->db->or_like('movie_code', $key_search);
+            $this->db->group_end();
         }
         $this->db->where('movie_visible', $visible);
         $this->db->order_by($sort_by, $order_sort);
         $this->db->limit($rowperpage, $rowno);
         $query = $this->db->get();
-        return $query->result_array();
+        if ($query->num_rows() > 0) {
+            $resultArray = $query->result_array();
+            foreach ($resultArray as $value) {
+                $this->db->select('poster_type, poster_url');
+                $this->db->from('poster');
+                $this->db->where('product_id', $value['movie_code']);
+                $this->db->where('poster_visible', 'Y');
+                $this->db->where_in('poster_type', array('vod_410x230', 'vod_170x252'));
+                $queryPosters = $this->db->get()->result_array();
+                $imageUrl = null;
+                $imageType = null;
+                if (!empty($queryPosters)) {
+                    foreach ($queryPosters as $poster) {
+                        if ($poster['poster_type'] == 'vod_410x230') {
+                            $imageUrl = $poster['poster_url'];
+                            $imageType = 'landscape';
+                            break;
+                        }
+                    }
+                    if ($imageUrl === null) {
+                        foreach ($queryPosters as $poster) {
+                            if ($poster['poster_type'] == 'vod_170x252') {
+                                $imageUrl = $poster['poster_url'];
+                                $imageType = 'portrait';
+                                break;
+                            }
+                        }
+                    }
+                }
+                $this->db->select('stream_screen, stream_url');
+                $this->db->from('streams');
+                $this->db->where('product_id', $value['movie_code']);
+                $this->db->where('stream_type', 'MOV');
+                $queryStreams = $this->db->get()->result_array();
+                $streamUrl = null;
+                if (!empty($queryStreams)) {
+                    foreach ($queryStreams as $stream) {
+                        if ($stream['stream_screen'] == '101') {
+                            $streamUrl = $stream['stream_url'];
+                            break;
+                        }
+                    }
+                    if ($streamUrl === null) {
+                        $streamUrl = $queryStreams[0]['stream_url'];
+                    }
+                }
+                $value['imageUrl'] = $imageUrl;
+                $value['imageType'] = $imageType;
+                $value['streamUrl'] = $streamUrl;
+                $data[] = $value;
+            }
+        }
+        return $data;
     }
 
     public function activated_movie($id)
@@ -74,8 +129,7 @@ class Movie_model extends CI_Model {
             'movie_visible' => 'Y'
         );
         $this->db->where('movie_id', $id);
-        $this->db->update('movies', $data);
-        redirect(site_url('movies'));
+        return $this->db->update('movies', $data);
     }
 
     public function inactivated_movie($id)
@@ -85,8 +139,7 @@ class Movie_model extends CI_Model {
             'movie_visible' => 'N'
         );
         $this->db->where('movie_id', $id);
-        $this->db->update('movies', $data);
-        redirect(site_url('movies'));
+        return $this->db->update('movies', $data);
     }
 
     public function get_list_movie_code($perPage, $page, $searchTerm, $type)
@@ -94,7 +147,7 @@ class Movie_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('mng_code');
         if ($type == 'data') {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('code_init', $searchTerm);
                 $this->db->or_like('code_remark', $searchTerm);
             }
@@ -104,7 +157,7 @@ class Movie_model extends CI_Model {
             $this->db->limit($perPage, $page);
             return $this->db->get()->result_array();
         } else {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('code_init', $searchTerm);
                 $this->db->or_like('code_remark', $searchTerm);
             }
@@ -160,7 +213,7 @@ class Movie_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('keywords');
         if ($type == 'data') {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('keyword_name', $searchTerm);
             }
             $this->db->where('keyword_visible', 'Y');
@@ -179,7 +232,7 @@ class Movie_model extends CI_Model {
             }
             return $data;
         } else {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('keyword_name', $searchTerm);
             }
             $this->db->where('keyword_visible', 'Y');
@@ -193,7 +246,7 @@ class Movie_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('movies');
         if ($type == 'data') {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('movie_title', $searchTerm);
             }
             $this->db->where('movie_visible', 'Y');
@@ -212,7 +265,7 @@ class Movie_model extends CI_Model {
             }
             return $data;
         } else {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('movie_title', $searchTerm);
             }
             $this->db->where('movie_visible', 'Y');
@@ -243,7 +296,6 @@ class Movie_model extends CI_Model {
         $this->db->where('keyword_ref', $ref);
         $this->db->where('keyword_visible', 'Y');
         $row = $this->db->get()->row_array();
-
         if ($row) {
             return [
                 'id' => $row['keyword_id'],
@@ -261,7 +313,6 @@ class Movie_model extends CI_Model {
         $this->db->where('movie_type', $type);
         $this->db->where('movie_visible', 'Y');
         $row = $this->db->get()->row_array();
-
         if ($row) {
             return [
                 'id' => $row['movie_id'],
@@ -288,7 +339,7 @@ class Movie_model extends CI_Model {
                 "kp.keyword_id = CAST(SUBSTRING_INDEX(TRIM(BOTH ',' FROM k.keyword_parentid), ',', 1) AS UNSIGNED)",
                 'LEFT'
             );
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('k.keyword_name', $searchTerm);
             }
             $this->db->where_in('k.keyword_ref', array('STD','VBX','SEO','REC','CMB','DPL','GEN'));
@@ -319,7 +370,6 @@ class Movie_model extends CI_Model {
                 "kp.keyword_id = CAST(SUBSTRING_INDEX(TRIM(BOTH ',' FROM k.keyword_parentid), ',', 1) AS UNSIGNED)",
                 'LEFT'
             );
-            // Tambahkan search filter jika ada
             if ($searchTerm!=null) {
                 $this->db->like('k.keyword_name', $searchTerm);
             }
@@ -429,7 +479,6 @@ class Movie_model extends CI_Model {
                 $value['movie_code_init'] = $movie_code_init;
                 $value['movie_code_remark'] = $movie_code_remark;
                 $value['movie_parent_id_name'] = $movie_parent_id_name;
-
                 $explodeKeywords = array_filter(array_values(explode(',', $mvKeywords)));
                 $this->db->select('k.keyword_id AS id');
                 $this->db->select("
@@ -450,8 +499,7 @@ class Movie_model extends CI_Model {
                 $queryGroupKeyword = $this->db->get();
                 $num_rows_group_keyword = $queryGroupKeyword->num_rows();
                 $groupKeywords = array();
-                if ($num_rows_group_keyword > 0)
-                {
+                if ($num_rows_group_keyword > 0) {
                     $groupKeywords = $queryGroupKeyword->result_array();
                 }
                 $value['group_keywords'] = $groupKeywords;
@@ -489,11 +537,11 @@ class Movie_model extends CI_Model {
         return $this->db->update('movies');
     }
 
-    public function getListCodeCount($key_search,$visible)
+    public function getListCodeCount($key_search, $visible)
     {
         $this->db->select('count(code_id) as allcount');
         $this->db->from('mng_code');
-        if ($key_search!='null') {
+        if ($key_search != 'null') {
             $this->db->like('code_init', $key_search);
             $this->db->or_like('code_remark', $key_search);
         }
@@ -504,11 +552,11 @@ class Movie_model extends CI_Model {
         return $result[0]['allcount'];
     }
 
-    public function getDataListCode($rowno,$rowperpage,$order_sort,$sort_by,$key_search,$visible)
+    public function getDataListCode($rowno, $rowperpage, $order_sort, $sort_by, $key_search, $visible)
     {
         $this->db->select('*');
         $this->db->from('mng_code');
-        if ($key_search!='null') {
+        if ($key_search != 'null') {
             $this->db->like('code_init', $key_search);
             $this->db->or_like('code_remark', $key_search);
         }
@@ -543,7 +591,7 @@ class Movie_model extends CI_Model {
         return $query;
     }
 
-    public function update_code($code_id,$initial_code,$remark)
+    public function update_code($code_id, $initial_code, $remark)
     {
         $this->db->select('*');
         $this->db->from('mng_code');
@@ -557,6 +605,63 @@ class Movie_model extends CI_Model {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function codeCreateUpdate($initial_code, $remark, $code_id, $type)
+    {
+        if ($type == 'create') {
+            if ($code_id != null || $code_id != "") {
+                return [
+                    'status' => false,
+                    'message' => 'Code ID must be empty when creating'
+                ];
+            }
+            $this->db->where('code_init', $initial_code);
+            $query = $this->db->get('mng_code');
+            if ($query->num_rows() > 0) {
+                return [
+                    'status' => false,
+                    'message' => 'Initial code already exists'
+                ];
+            }
+            $data = [
+                'code_parent' => '87',
+                'code_init' => $initial_code,
+                'code_sort' => '0',
+                'code_remark' => $remark,
+                'code_visible' => 'N',
+            ];
+            $this->db->insert('mng_code', $data);
+            return [
+                'status' => true,
+                'message' => 'Code successfully created'
+            ];
+        } else {
+            if ($code_id == null || $code_id == "") {
+                return [
+                    'status' => false,
+                    'message' => 'Code ID cannot be empty when updating'
+                ];
+            }
+            $queryExist = $this->db->get_where('mng_code', ['code_id' => $code_id]);
+            $codeExist = $queryExist->row('code_init');
+
+            $queryCheck = $this->db->get_where('mng_code', ['code_init' => $initial_code]);
+            if ($queryCheck->num_rows() > 0 && $initial_code != $codeExist) {
+                return [
+                    'status' => false,
+                    'message' => 'Initial code already exists'
+                ];
+            }
+            $this->db->set('code_init', $initial_code);
+            $this->db->set('code_remark', $remark);
+            $this->db->where('code_id', $code_id);
+            $this->db->update('mng_code');
+            return [
+                'status' => true,
+                'message' => 'Code successfully updated'
+            ];
         }
     }
 
@@ -589,15 +694,33 @@ class Movie_model extends CI_Model {
         return $this->db->update('mng_code');
     }
 
-    public function update_sort($query)
+    public function update_sort($page_id_array)
     {
-        return $this->db->query($query);
+        // return $this->db->query($query);
+
+        $this->db->trans_start();
+        $data = [];
+        $i = 1;
+        foreach ($page_id_array as $id) {
+            $data[] = [
+                'keyword_id'   => $id,
+                'keyword_sort' => $i++
+            ];
+        }
+        if (!empty($data)) {
+            $this->db->update_batch('keywords', $data, 'keyword_id');
+        }
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === false) {
+            return ['error' => '1', 'message' => 'Failed to update sorting'];
+        }
+        return ['error' => '0', 'message' => 'Sorting updated successfully'];
     }
 
-    public function getListKeywordCount($key_search,$visible,$contentKey)
+    public function getListKeywordCount($key_search, $visible, $contentKey)
     {
         $this->db->select('count(k.keyword_id) as allcount');
-        if ($contentKey=='SUBGEN') {
+        if ($contentKey == 'SUBGEN') {
             $this->db->select("
                 CASE 
                     WHEN k.keyword_ref = 'GEN' AND k.keyword_parentid IS NOT NULL AND k.keyword_parentid != ''
@@ -614,7 +737,7 @@ class Movie_model extends CI_Model {
             if ($key_search!='null') {
                 $this->db->like('k.keyword_name', $key_search);
             }
-        } elseif ($contentKey=='GEN') {
+        } elseif ($contentKey == 'GEN') {
             $this->db->from('keywords k');
             $this->db->where('k.keyword_ref', $contentKey);
             $this->db->where('k.keyword_parentid IS NULL', null, false);
@@ -622,11 +745,11 @@ class Movie_model extends CI_Model {
             if ($key_search!='null') {
                 $this->db->like('k.keyword_name', $key_search);
             }
-        } elseif ($contentKey=='STD') {
+        } elseif ($contentKey == 'STD') {
             $this->db->from('keywords k');
             $this->db->where('k.keyword_ref', $contentKey);
             $this->db->where('k.keyword_visible', $visible);
-            if ($key_search!='null') {
+            if ($key_search != 'null') {
                 $this->db->like('k.keyword_name', $key_search);
             }
             $this->db->order_by('CAST(k.keyword_sort AS DECIMAL)', 'ASC');
@@ -636,30 +759,30 @@ class Movie_model extends CI_Model {
         return $result[0]['allcount'];
     }
 
-    public function getDataListKeyword($rowno,$rowperpage,$order_sort,$sort_by,$key_search,$visible,$contentKey)
+    public function getDataListKeyword($rowno, $rowperpage, $order_sort, $sort_by, $key_search, $visible, $contentKey)
     {
         $this->db->select('k.*');
-        if ($contentKey=='SUBGEN') {
+        if ($contentKey == 'SUBGEN') {
             $this->db->select("kp.keyword_name AS genre_name", false);
             $this->db->from('keywords k');
             $this->db->join('keywords kp', "kp.keyword_id = CAST(SUBSTRING_INDEX(TRIM(BOTH ',' FROM k.keyword_parentid), ',', 1) AS UNSIGNED)",
                 'LEFT');
             $this->db->where('k.keyword_ref', 'GEN');
             $this->db->where('k.keyword_parentid IS NOT NULL', null, false);
-                if ($key_search!='null') {
+                if ($key_search != 'null') {
                 $this->db->like('k.keyword_name', $key_search);
             }
-        } elseif ($contentKey=='GEN') {
+        } elseif ($contentKey == 'GEN') {
             $this->db->from('keywords k');
             $this->db->where('k.keyword_ref', $contentKey);
             $this->db->where('k.keyword_parentid IS NULL', null, false);
-            if ($key_search!='null') {
+            if ($key_search != 'null') {
                 $this->db->like('k.keyword_name', $key_search);
             }
-        } elseif ($contentKey=='STD') {
+        } elseif ($contentKey == 'STD') {
             $this->db->from('keywords k');
             $this->db->where('k.keyword_ref', $contentKey);
-            if ($key_search!='null') {
+            if ($key_search != 'null') {
                 $this->db->like('k.keyword_name', $key_search);
             }
             $this->db->order_by('CAST(k.keyword_sort AS DECIMAL)', 'ASC');
@@ -676,7 +799,7 @@ class Movie_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('keywords');
         if ($type == 'data') {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('keyword_name', $searchTerm);
             }
             $this->db->where('keyword_visible', 'Y');
@@ -686,7 +809,7 @@ class Movie_model extends CI_Model {
             $this->db->limit($perPage, $page);
             return $this->db->get()->result_array();
         } else {
-            if ($searchTerm!=null) {
+            if ($searchTerm != null) {
                 $this->db->like('keyword_name', $searchTerm);
             }
             $this->db->where('keyword_visible', 'Y');
@@ -696,73 +819,73 @@ class Movie_model extends CI_Model {
         }
     }
 
-    public function cu_keyword($keyword_id,$keyword_name,$keyword_child,$keyword_ref,$genre_id,$type)
+    public function cu_keyword($keyword_id, $keyword_name, $keyword_child, $keyword_ref, $genre_id, $type)
     {
-        if ($type=='create') {
-            if ($keyword_id!=null || $keyword_id!="") {
-                return false;
+        if ($type == 'create') {
+            if ($keyword_id != null || $keyword_id != "") {
+                return [
+                    'status' => false,
+                    'message' => 'Keyword ID must be empty when creating'
+                ];
             }
             switch ($keyword_ref) {
                 case 'STD':
-                    $data = array(
-                        'keyword_name' => $keyword_name,
-                        'keyword_child' => $keyword_child,
-                        'keyword_sub' => 'N',
-                        'keyword_ref' => $keyword_ref,
-                    );
-                    break;
                 case 'GEN':
-                    $data = array(
+                    $data = [
                         'keyword_name' => $keyword_name,
                         'keyword_child' => $keyword_child,
                         'keyword_sub' => 'N',
                         'keyword_ref' => $keyword_ref,
-                    );
+                    ];
                     break;
                 case 'SUBGEN':
-                    $data = array(
+                    $data = [
                         'keyword_name' => $keyword_name,
                         'keyword_child' => $keyword_child,
                         'keyword_sub' => 'N',
-                        'keyword_ref' => $keyword_ref,
+                        'keyword_ref' => 'GEN',
                         'keyword_parentid' => ','.$genre_id.',',
-                    );
+                    ];
                     break;
                 default:
-                    return false;
-                    break;
+                    return [
+                        'status' => false,
+                        'message' => 'Invalid keyword reference type'
+                    ];
             }
             $this->db->insert('keywords', $data);
-            return true;
+            return [
+                'status' => true,
+                'message' => 'Keyword successfully created'
+            ];
         } else {
-            if ($keyword_id==null || $keyword_id=="") {
-                return false;
+            if ($keyword_id == null || $keyword_id == "") {
+                return [
+                    'status' => false,
+                    'message' => 'Keyword ID cannot be empty when updating'
+                ];
             }
             switch ($keyword_ref) {
                 case 'STD':
-                    $this->db->set('keyword_name', $keyword_name);
-                    $this->db->where('keyword_id', $keyword_id);
-                    $this->db->update('keywords');
-                    return true;
-                    break;
                 case 'GEN':
                     $this->db->set('keyword_name', $keyword_name);
-                    $this->db->where('keyword_id', $keyword_id);
-                    $this->db->update('keywords');
-                    return true;
                     break;
                 case 'SUBGEN':
-                    $keywordparentid = ','.$genre_id.',';
                     $this->db->set('keyword_name', $keyword_name);
-                    $this->db->set('keyword_parentid', $keywordparentid);
-                    $this->db->where('keyword_id', $keyword_id);
-                    $this->db->update('keywords');
-                    return true;
+                    $this->db->set('keyword_parentid', ',' . $genre_id . ',');
                     break;
                 default:
-                    return false;
-                    break;
+                    return [
+                        'status' => false,
+                        'message' => 'Invalid keyword reference type'
+                    ];
             }
+            $this->db->where('keyword_id', $keyword_id);
+            $this->db->update('keywords');
+            return [
+                'status' => true,
+                'message' => 'Keyword successfully updated'
+            ];
         }
     }
 
@@ -775,6 +898,62 @@ class Movie_model extends CI_Model {
         $this->db->where('k.keyword_id', $id);
         $query = $this->db->get()->result();
         return $query;
+    }
+
+    public function activate_keyword($id)
+    {
+        $queryType = $this->db->get_where('keywords', ['keyword_id' => $id]);
+        $keywordType = $queryType->row('keyword_ref');
+        if ($keywordType == 'STD') {
+            $this->db->select('keyword_sort');
+            $this->db->from('keywords');
+            $this->db->where('keyword_ref', 'STD');
+            $this->db->where('keyword_visible', 'Y');
+            $this->db->order_by('CAST(keyword_sort AS decimal) DESC', false);
+            $sort = $this->db->get()->row('keyword_sort');
+            $this->db->set('keyword_sort', $sort + 1);
+        }
+        $this->db->set('keyword_visible', 'Y');
+        $this->db->where('keyword_id', $id);
+        return $this->db->update('keywords');
+    }
+
+    public function inactivate_keyword($id)
+    {
+        $this->db->trans_start();
+        $query = $this->db->get_where('keywords', ['keyword_id' => $id]);
+        $keywordType = $query->row('keyword_ref');
+        if ($keywordType == 'STD') {
+            $this->db->set('keyword_sort', NULL);
+        }
+        $this->db->set('keyword_visible', 'N');
+        $this->db->where('keyword_id', $id);
+        $this->db->update('keywords');
+        if ($keywordType == 'STD') {
+            $result = $this->db
+                ->select('keyword_id')
+                ->where('keyword_ref', 'STD')
+                ->where('keyword_visible', 'Y')
+                ->order_by('CAST(keyword_sort AS DECIMAL)', 'ASC', false)
+                ->get('keywords')
+                ->result_array();
+            $data = [];
+            $i = 1;
+            foreach ($result as $row) {
+                $data[] = [
+                    'keyword_id'   => $row['keyword_id'],
+                    'keyword_sort' => $i++
+                ];
+            }
+            if (!empty($data)) {
+                $this->db->update_batch('keywords', $data, 'keyword_id');
+            }
+        }
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === false) {
+            return false;
+        }
+        return true;
     }
 
     public function get_data_poster_stream($movie_id)

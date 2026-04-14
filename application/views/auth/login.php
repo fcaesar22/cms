@@ -41,19 +41,22 @@
                 </div>
                 <div class="login__block__body">
                     <?php if($this->session->flashdata('error')): ?>
-                        <p style="color:red;"><?= $this->session->flashdata('error') ?></p>
+                        <div id="loginWording" class="alert alert-danger alert-dismissible fade show">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <?= $this->session->flashdata('error') ?>
+                        </div>
                     <?php endif; ?>
                     <form action="<?php echo site_url('auth/login'); ?>" method="post">
                         <div class="form-group form-group--float form-group--centered">
-                            <input type="text" class="form-control" name="username" placeholder="Username" required />
+                            <input type="text" class="form-control" name="username" value="<?= $this->session->flashdata('username') ?>" placeholder="Username" required />
                             <i class="form-group__bar"></i>
                         </div>
-
                         <div class="form-group form-group--float form-group--centered">
-                            <input type="password" class="form-control" name="password" placeholder="Password" required />
+                            <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="off" required />
                             <i class="form-group__bar"></i>
                         </div>
-
                         <button class="btn btn--icon login__block__btn"><i class="zmdi zmdi-long-arrow-right"></i></button>
                     </form>
                 </div>
@@ -65,3 +68,12 @@
     <script src="<?=base_url()?>assets/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="<?=base_url()?>assets/js/app.min.js"></script>
 </html>
+
+<script type="text/javascript">
+    setTimeout(function() {
+        var alert = document.getElementById('loginWording');
+        if (alert) {
+            $(alert).alert('close');
+        }
+    }, 5000);
+</script>
