@@ -35,6 +35,7 @@
 	    <link rel="stylesheet" href="<?=base_url()?>assets/vendors/bower_components/select2/dist/css/select2.min.css">
 	    <link rel="stylesheet" href="<?=base_url()?>assets/vendors/bower_components/flatpickr/dist/flatpickr.min.css">
 	    <link rel="stylesheet" href="<?=base_url()?>assets/vendors/bower_components/trumbowyg/dist/ui/trumbowyg.min.css">
+	    <link rel="stylesheet" href="<?=base_url()?>assets/vendors/bower_components/sweetalert2/dist/sweetalert2.min.css">
 	    <link rel="stylesheet" href="<?=base_url()?>assets/fontawesome5102/css/all.min.css">
 	    <link rel="stylesheet" href="<?=base_url()?>assets/fontawesome/dist/css/fontawesome-iconpicker.min.css">
 	    <link rel="stylesheet" href="<?=base_url()?>assets/video-js/video-js.css">
@@ -85,6 +86,7 @@
         <script src="<?=base_url()?>assets/vendors/bower_components/select2/dist/js/select2.full.min.js"></script>
         <script src="<?=base_url()?>assets/vendors/bower_components/flatpickr/dist/flatpickr.min.js"></script>
         <script src="<?=base_url()?>assets/vendors/bower_components/trumbowyg/dist/trumbowyg.min.js"></script>
+        <script src="<?=base_url()?>assets/vendors/bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
         <script src="<?=base_url()?>assets/fontawesome/dist/js/fontawesome-iconpicker.min.js"></script>
         <script src="<?=base_url()?>assets/js/datatables.js"></script>
         <script src="<?=base_url()?>assets/js/jquery-ui.min.js"></script>
