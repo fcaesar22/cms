@@ -151,36 +151,6 @@
     </div>
 </section>
 
-<!--Active Article Confirmation-->
-<div class="modal fade" id="activeMovieModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-body" align="center">Are you sure?</div>
-            </div>
-            <div class="modal-footer" style="justify-content: center;">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a id="btn-confirmactive" class="btn btn-success" href="#">Yes</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--Inactive Article Confirmation-->
-<div class="modal fade" id="inactiveMovieModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-body" align="center">Are you sure?</div>
-            </div>
-            <div class="modal-footer" style="justify-content: center;">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a id="btn-confirminactive" class="btn btn-danger" href="#">Yes</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="modal-preview" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
