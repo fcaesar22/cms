@@ -53,6 +53,8 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 041  | 041_create_category_catchup_table.sql                    | Membuat tabel `category_catchup`                        |
 | 042  | 042_create_model_tag_table.sql                           | Membuat tabel `model_tag`                               |
 | 043  | 043_create_tag_table.sql                                 | Membuat tabel `tag`                                     |
+| 044  | 044_create_category_tvshow_table.sql                     | Membuat tabel `category_tvshow`                         |
+| 045  | 045_create_top_tvshow_table.sql                          | Membuat tabel `top_tvshow`                              |
 
 ---
 
