@@ -367,7 +367,6 @@ class Catchup_schedules extends CI_Controller {
                 'start_date' => $this->input->post('start_date'),
                 'end_date' => $this->input->post('end_date'),
                 'trailer_url' => $this->input->post('trailer_url'),
-                'create_date' => $time,
                 'update_date' => $time,
                 'ctrloc' => '/category_schedules/edit'
             ];
