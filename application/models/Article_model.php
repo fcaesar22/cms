@@ -628,4 +628,179 @@ class Article_model extends CI_Model {
         $data = $this->db->query("select poster_url from poster where poster_visible='Y' and poster_type in ('dls_1280x720')");
         return $data->result_array();
     }
+
+    public function getListKeywordCount($key_search, $visible, $contentKey)
+    {
+        $this->db->select('id_ads');
+        $this->db->from('ads_homepage');
+        
+        if ($key_search != 'null') {
+            $this->db->like('title', $key_search);
+        }
+
+        $this->db->where('on_feature', $contentKey);
+        $this->db->where('visible', $visible);
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function getDataListKeyword($key_search, $visible, $contentKey, $order_sort, $sort_by, $rowperpage, $rowno)
+    {
+        $this->db->select('*');
+        $this->db->from('ads_homepage');
+        
+        if ($key_search != 'null') {
+            $this->db->like('title', $key_search);
+        }
+
+        $this->db->where('on_feature', $contentKey);
+        $this->db->where('visible', $visible);
+
+        if ($visible == 'Y') {
+            $this->db->order_by('CAST(sort AS decimal) ASC', false);
+        } else {
+            $this->db->order_by($sort_by, $order_sort);
+        }
+
+        $this->db->limit($rowperpage, $rowno);  
+        $query = $this->db->get();
+        
+        return $query->result_array();
+    }
+
+    public function updateSortAds($id_ads, $on_feature, $sort)
+    {
+        $this->db
+            ->where('visible', 'Y')
+            ->where('on_feature', $on_feature)
+            ->where('id_ads', $id_ads)
+            ->update('ads_homepage', [
+                'sort' => $sort
+            ]);
+
+        return $this->db->affected_rows();
+    }
+
+    public function activate_ads($id, $keyword)
+    {
+        $this->db->select('sort');
+        $this->db->from('ads_homepage');
+        $this->db->where('on_feature', $keyword);
+        $this->db->where('visible', 'Y');
+        $this->db->order_by('CAST(sort AS decimal) DESC', false);
+        $sort = $this->db->get()->row('sort');
+
+        $this->db->set('sort', $sort + 1);
+        $this->db->set('visible', 'Y');
+        $this->db->where('id_ads', $id);
+        return $this->db->update('ads_homepage');
+    }
+
+    public function inactivate_ads($id, $keyword)
+    {
+        $this->db->trans_start();
+        
+        $this->db->set('sort', NULL);
+        $this->db->set('visible', 'N');
+        $this->db->where('id_ads', $id);
+        $this->db->update('ads_homepage');
+        
+        $result = $this->db
+            ->select('id_ads')
+            ->where('on_feature', $keyword)
+            ->where('visible', 'Y')
+            ->order_by('CAST(sort AS DECIMAL)', 'ASC', false)
+            ->get('ads_homepage')
+            ->result_array();
+        
+        $data = [];
+        $i = 1;
+        
+        foreach ($result as $row) {
+            $data[] = [
+                'id_ads'   => $row['id_ads'],
+                'sort' => $i++
+            ];
+        }
+
+        if (!empty($data)) {
+            $this->db->update_batch('ads_homepage', $data, 'id_ads');
+        }
+
+        $this->db->trans_complete();
+        
+        if ($this->db->trans_status() === false) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function get_data_edit_ads($id)
+    {
+        $this->db->select('*');
+        $this->db->from('ads_homepage');
+        $this->db->where('id_ads', $id);
+        $query = $this->db->get()->result();
+        return $query;
+    }
+
+    public function cu_ads($id_ads, $image_url, $on_feature, $title, $target, $location, $type_content, $content_id, $start_date, $end_date, $time, $type)
+    {
+        if ($type == 'create') {
+            if ($id_ads != null || $id_ads != "") {
+                return [
+                    'status' => false,
+                    'message' => 'Ads ID must be empty when creating'
+                ];
+            }
+            
+            $data = [
+                'image_url' => $image_url,
+                'title' => $title,
+                'target' => $target,
+                'location' => $location,
+                'type_content' => $type_content,
+                'content_id' => $content_id,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'on_feature' => $on_feature,
+                'visible' => 'N',
+                'create_date' => $time,
+                'update_date' => $time
+            ];
+
+            $this->db->insert('ads_homepage', $data);
+
+            return [
+                'status' => true,
+                'message' => 'Ads successfully created'
+            ];
+        } else {
+            if ($id_ads == null || $id_ads == "") {
+                return [
+                    'status' => false,
+                    'message' => 'Ads ID cannot be empty when updating'
+                ];
+            }
+            
+            $this->db->set('image_url', $image_url);
+            $this->db->set('on_feature', $on_feature);
+            $this->db->set('title', $title);
+            $this->db->set('target', $target);
+            $this->db->set('location', $location);
+            $this->db->set('type_content', $type_content);
+            $this->db->set('content_id', $content_id);
+            $this->db->set('start_date', $start_date);
+            $this->db->set('end_date', $end_date);
+            $this->db->set('update_date', $time);
+            $this->db->where('id_ads', $id_ads);
+            $this->db->update('ads_homepage');
+            return [
+                'status' => true,
+                'message' => 'Ads successfully updated'
+            ];
+        }
+    }
 }
