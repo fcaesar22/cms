@@ -56,6 +56,7 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 044  | 044_create_category_tvshow_table.sql                     | Membuat tabel `category_tvshow`                         |
 | 045  | 045_create_top_tvshow_table.sql                          | Membuat tabel `top_tvshow`                              |
 | 046  | 046_create_tv_schedule_table.sql                         | Membuat tabel `tv_schedule`                             |
+| 047  | 047_create_section_table.sql                             | Membuat tabel `section`                                 |
 
 ---
 

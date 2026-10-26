@@ -1162,4 +1162,220 @@ class Articles extends CI_Controller {
         }
         echo json_encode($tmpArray);
     }
+
+    public function listAds($key_search=null, $sort_by='id_ads', $order_sort='DESC', $visible='Y', $contentKey='denslife', $rowperpage, $rowno=0)
+    {
+        if ($rowperpage == null) {
+            $rowperpage = 10;
+        }
+
+        if ($rowno != 0) {
+            $rowno = ($rowno-1) * $rowperpage;
+        }
+        
+        $key_search = urldecode($key_search);
+
+        $allcount = $this->Article_model->getListKeywordCount($key_search, $visible, $contentKey);
+        $users_record = $this->Article_model->getDataListKeyword($key_search, $visible, $contentKey, $order_sort, $sort_by, $rowperpage, $rowno);
+
+        $config['base_url'] = base_url().'explores/listAds/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$contentKey.'/'.$rowperpage.'/'.$rowno;
+        $config['use_page_numbers'] = TRUE;
+        $config['total_rows'] = $allcount;
+        $config['per_page'] = $rowperpage;
+        $config['full_tag_open'] = '<div class="pagging text-center"><nav><ul class="pagination justify-content-center">';
+        $config['full_tag_close'] = '</ul></nav></div>';
+        $config['num_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['num_tag_close'] = '</span></li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close'] = '<span class="sr-only">(current)</span></span></li>';
+        $config['next_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['next_tagl_close'] = '<span aria-hidden="true">&raquo;</span></span></li>';
+        $config['prev_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['prev_tagl_close'] = '</span>Next</li>';
+        $config['first_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['first_tagl_close'] = '</span></li>';
+        $config['last_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['last_tagl_close'] = '</span></li>';
+        $this->pagination->initialize($config);
+        $data['z'] = $config['total_rows'];
+        $data['x'] = (int)$rowno + 1;
+        
+        if ($rowno + $config['per_page'] > $config['total_rows']) {
+            $data['y'] = $config['total_rows'];
+        } else {
+            $data['y'] = (int)$rowno + $config['per_page'];
+        }
+
+        $data['pagination'] = $this->pagination->create_links();
+        $data['result'] = $users_record;
+        $data['row'] = $rowno;
+        $data['order'] = $order_sort;
+        echo json_encode($data);
+    }
+
+    public function updateSortAds()
+    {
+        $page_id_array = $this->input->post('page_id_array');
+        $on_feature = $this->input->post('content');
+        $action = $this->input->post('action');
+
+        if (empty($page_id_array) || empty($on_feature) || $action != 'update') {
+            echo json_encode([
+                'error' => '1',
+                'message' => 'Invalid request'
+            ]);
+            return;
+        }
+
+        for ($count = 0; $count < count($page_id_array); $count++) {
+            $sort = $count + 1;
+            $id_ads = $page_id_array[$count];
+
+            $this->Article_model->updateSortAds($id_ads, $on_feature, $sort);
+        }
+
+        echo json_encode([
+            'error' => '0',
+            'message' => 'Sorting updated successfully'
+        ]);
+    }
+
+    public function activate_ads()
+    {
+        $id = $this->input->post('id');
+        $keyword = $this->input->post('keyword');
+        $inactive = $this->Article_model->activate_ads($id, $keyword);
+        if ($inactive == true) {
+            $results = array(
+                'error' => '0',
+                'message' => 'The ads has been successfully activated.'
+            );
+        } else {
+            $results = array(
+                'error' => '1',
+                'message' => 'Failed to activate the ads.'
+            );
+        }
+        echo json_encode($results);
+    }
+
+    public function inactivate_ads()
+    {
+        $id = $this->input->post('id');
+        $keyword = $this->input->post('keyword');
+        $inactive = $this->Article_model->inactivate_ads($id, $keyword);
+        if ($inactive == true) {
+            $results = array(
+                'error' => '0',
+                'message' => 'The ads has been successfully deactivated.'
+            );
+        } else {
+            $results = array(
+                'error' => '1',
+                'message' => 'Failed to deactivate the ads.'
+            );
+        }
+        echo json_encode($results);
+    }
+
+    public function get_data_edit_ads()
+    {
+        $id = $this->input->post('id',TRUE);
+        $code = $this->Article_model->get_data_edit_ads($id);
+        
+        if ($code != null) {
+            $data = $code;
+        } else {
+            die("Data not found");
+        }
+
+        echo json_encode($data);
+    }
+
+    public function cu_ads()
+    {
+        date_default_timezone_set("Asia/Jakarta"); 
+        $time = date('Y-m-d H:i:s');
+
+        $id_ads = $this->input->post('id_ads_form');
+        $image_url = $this->input->post('imgAdsUrl');
+        $on_feature = $this->input->post('on_feature');
+        $title = $this->input->post('titleAds');
+        $target = $this->input->post('target');
+        $location = $this->input->post('location');
+        $type_content = $this->input->post('type_content');
+        $content_id = $this->input->post('content_id');
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+        
+        if ($id_ads == null || $id_ads == "") {
+            $cu = $this->Article_model->cu_ads($id_ads, $image_url, $on_feature, $title, $target, $location, $type_content, $content_id, $start_date, $end_date, $time, 'create');
+        } else {
+            $cu = $this->Article_model->cu_ads($id_ads, $image_url, $on_feature, $title, $target, $location, $type_content, $content_id, $start_date, $end_date, $time, 'update');
+        }
+
+        if ($cu['status'] == true) {
+            $results = array(
+                'error' => '0',
+                'message' => $cu['message']
+            );
+        } else {
+            $results = array(
+                'error' => '1',
+                'message' => $cu['message']
+            );
+        }
+
+        echo json_encode($results);
+    }
+
+    public function compare_image_landscape()
+    {
+        echo json_encode($this->getImageBannerLandscape());
+    }
+
+    private function getImageBannerLandscape()
+    {
+        $data = array();
+        $_arrFolder = array();
+        $_urlimage = array();
+        
+        //formed array from server
+        $path = 'wp/img/banner_v1/720x720/';
+        $changeDir = 'wp/img/banner_v1/720x720/';
+        $listimg = $this->libadapter->getImages($path, $changeDir);
+        
+        if ($listimg['error'] == 0) {
+            $_arrFolder = array();
+            $listimg1 = $listimg['content'];
+            foreach ($listimg1 as $key => $value) {
+                $_arrFolder[] = $value['url'];
+            }
+            krsort($_arrFolder);
+            
+            //formed array from database
+            $urlimage = $this->Explore_model->getImageBannerLandscape();
+            
+            if ($urlimage != null) {
+                foreach ($urlimage as $key => $value) {
+                    array_push($_urlimage, self::$baseurlimage . $path . basename($value['image_url']));
+                }
+            }
+            
+            $datas=array_values(array_diff($_arrFolder, $_urlimage));
+            $data = array_slice($datas,0,10);
+            $results = array(
+                'error' => '0',
+                'message' => 'success',
+                'content' => $data,
+            );
+        } else {
+            $results = array(
+                'error' => '1',
+                'message' => 'failed',
+                'content' => $data,
+            );
+        }
+        return $results;
+    }
 }
