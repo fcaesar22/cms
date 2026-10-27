@@ -91,9 +91,9 @@
                                     <thead>
                                         <tr>
                                             <th class="whid1">No.</th>
+                                            <th>Image</th>
                                             <th class="whtl1">Title</th>
                                             <th>Category</th>
-                                            <th>Image</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -128,9 +128,9 @@
                                     <thead>
                                         <tr>
                                             <th class="whid2">No.</th>
+                                            <th>Image</th>
                                             <th class="whtl2">Title</th>
                                             <th>Category</th>
-                                            <th>Image</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -529,9 +529,9 @@
                 }
                 var tr = "<tr id='"+id+"'>";
                 tr += "<td>"+ sno +"</td>";
+                tr += "<td>"+ htmlimage +"</td>";
                 tr += "<td>"+ title +"</td>";
                 tr += "<td>"+ categories +"</td>";
-                tr += "<td>"+ htmlimage +"</td>";
                 tr += `<td>
                             <div class='dropdown'>
                                 <button class='btn btn-light' data-toggle='dropdown' aria-expanded='false'>ACTION</button>

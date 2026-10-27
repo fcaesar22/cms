@@ -37,7 +37,7 @@ class Explores extends CI_Controller {
         $users_record = $this->Explore_model->getDatas($key_search, $sort_by, $order_sort, $visible, $rowperpage, $rowno);
 
         // Pagination Configuration
-        $config['base_url'] = base_url().'upcomings/list_explores/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$rowperpage.'/'.$rowno;
+        $config['base_url'] = base_url().'explores/list_explores/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$rowperpage.'/'.$rowno;
         $config['use_page_numbers'] = TRUE;
         $config['total_rows'] = $allcount;
         $config['per_page'] = $rowperpage;

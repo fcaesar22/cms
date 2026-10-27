@@ -214,7 +214,7 @@ class Showcases extends CI_Controller {
         $key_search = urldecode($key_search);
         $allcount = $this->Showcase_model->getListCategoryCount($key_search,$visible);
         $users_record = $this->Showcase_model->getDataListCategory($rowno,$rowperpage,$order_sort,$sort_by,$key_search,$visible);
-        $config['base_url'] = base_url().'movies/list_movie_keyword/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$rowperpage.'/'.$rowno;
+        $config['base_url'] = base_url().'showcases/list_category_showcase/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$rowperpage.'/'.$rowno;
         $config['use_page_numbers'] = TRUE;
         $config['total_rows'] = $allcount;
         $config['per_page'] = $rowperpage;

@@ -71,8 +71,8 @@
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>Category</th>
                                             <th>Image</th>
+                                            <th>Category</th>
                                             <th>Title</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
@@ -114,8 +114,8 @@
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>Category</th>
                                             <th>Image</th>
+                                            <th>Category</th>
                                             <th>Title</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
@@ -609,8 +609,8 @@
                 }
                 var tr = "<tr id='"+id+"'>";
                 tr += "<td>"+ sno +"</td>";
-                tr += "<td>"+ category_name +"</td>";
                 tr += "<td>"+ htmlimage +"</td>";
+                tr += "<td>"+ category_name +"</td>";
                 tr += "<td>"+ title +"</td>";
                 tr += "<td>"+ start_date +"</td>";
                 tr += "<td>"+ end_date +"</td>";
