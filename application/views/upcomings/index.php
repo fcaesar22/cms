@@ -63,8 +63,6 @@
                                             <th>No.</th>
                                             <th>Title</th>
                                             <th>Description</th>
-                                            <th>Director</th>
-                                            <th>Cast</th>
                                             <th>Create Date</th>
                                             <th>Update Date</th>
                                             <th>Action</th>
@@ -97,8 +95,6 @@
                                             <th>No.</th>
                                             <th>Title</th>
                                             <th>Description</th>
-                                            <th>Director</th>
-                                            <th>Cast</th>
                                             <th>Create Date</th>
                                             <th>Update Date</th>
                                             <th>Action</th>
@@ -349,8 +345,6 @@
                 tr += "<td>"+ sno +"</td>"
                 tr += "<td>"+ title +"</td>"
                 tr += "<td>"+ description.substring(0, 80) + "..." + "</td>"
-                tr += "<td>"+ director +"</td>"
-                tr += "<td>"+ cast +"</td>"
                 tr += "<td>"+ create_date +"</td>"
                 tr += "<td>"+ update_date +"</td>"
                 tr += `<td>

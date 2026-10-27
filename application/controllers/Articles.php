@@ -1178,7 +1178,7 @@ class Articles extends CI_Controller {
         $allcount = $this->Article_model->getListKeywordCount($key_search, $visible, $contentKey);
         $users_record = $this->Article_model->getDataListKeyword($key_search, $visible, $contentKey, $order_sort, $sort_by, $rowperpage, $rowno);
 
-        $config['base_url'] = base_url().'explores/listAds/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$contentKey.'/'.$rowperpage.'/'.$rowno;
+        $config['base_url'] = base_url().'articles/listAds/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$visible.'/'.$contentKey.'/'.$rowperpage.'/'.$rowno;
         $config['use_page_numbers'] = TRUE;
         $config['total_rows'] = $allcount;
         $config['per_page'] = $rowperpage;

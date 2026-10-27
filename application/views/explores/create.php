@@ -19,7 +19,7 @@
                 <nav aria-label="breadcrumb" role="navigation">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
-                        <li class="breadcrumb-item"><a href="<?= base_url('explores') ?>">Section</a></li>
+                        <li class="breadcrumb-item"><a href="<?= base_url('explores') ?>">List Explore</a></li>
                         <li class="breadcrumb-item active" aria-current="page"><?= html_escape($title) ?></li>
                     </ol>
                 </nav>

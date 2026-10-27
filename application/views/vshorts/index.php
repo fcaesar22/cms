@@ -64,6 +64,7 @@
                                             <!-- <th>Image</th> -->
                                             <th class="highlightSort">Highlight</th>
                                             <th>Create Date</th>
+                                            <th>Update Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -95,6 +96,7 @@
                                             <!-- <th>Image</th> -->
                                             <th class="highlightSort">Highlight</th>
                                             <th>Create Date</th>
+                                            <th>Update Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -438,6 +440,7 @@
                 var title = result[index].title;
                 var highlight = result[index].highlight;
                 var create_date = result[index].create_date;
+                var update_date = result[index].update_date;
                 var visible = result[index].visible;
                 sno+=1;
                 var base_url ='<?php echo base_url()?>'
@@ -463,6 +466,7 @@
                 // tr += "<td>"+ htmlimage +"</td>";
                 tr += "<td>"+ highlight_status +"</td>";
                 tr += "<td>"+ create_date +"</td>";
+                tr += "<td>"+ update_date +"</td>";
                 tr += `<td>
                             <div class='dropdown'>
                                 <button class='btn btn-light' data-toggle='dropdown' aria-expanded='false'>ACTION</button>

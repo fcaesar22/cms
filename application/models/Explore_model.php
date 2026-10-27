@@ -521,6 +521,7 @@ class Explore_model extends CI_Model {
             }
 
             $this->db->where('visible', 'Y');
+            $this->db->where('on_feature', 'homepage');
             $this->db->order_by('id_ads', 'desc');
             $this->db->limit($perPage, $page);
             
@@ -531,6 +532,7 @@ class Explore_model extends CI_Model {
             }
 
             $this->db->where('visible', 'Y');
+            $this->db->where('on_feature', 'homepage');
             
             return $this->db->get()->num_rows();
         }
