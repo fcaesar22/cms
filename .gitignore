@@ -33,3 +33,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+
+# Firebase credentials
+/assets/denstv-adb70-firebase-adminsdk-6nknz-3a0b670ef0.json
