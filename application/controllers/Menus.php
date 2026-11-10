@@ -26,18 +26,20 @@ class Menus extends CI_Controller {
         $this->load->view('layouts/footer');
     }
 
-    public function list_menus($key_search=null, $sort_by='id', $order_sort='asc', $rowperpage=10, $rowno=0)
+    public function list_menus($key_search=null, $sort_by='id', $order_sort='asc', $type_menu='parent', $rowperpage=10, $rowno=0)
     {
+        $key_search = urldecode($key_search);
+
         if($rowno != 0){
             $rowno = ($rowno-1) * $rowperpage;
         }
         
-        $allcount = $this->Menu_model->getCountAll($key_search);
+        $allcount = $this->Menu_model->getCountAll($key_search, $type_menu);
 
-        $users_record = $this->Menu_model->getDatas($key_search, $sort_by, $order_sort, $rowperpage, $rowno);
+        $users_record = $this->Menu_model->getDatas($key_search, $sort_by, $order_sort, $type_menu, $rowperpage, $rowno);
         
         // Pagination Configuration
-        $config['base_url'] = base_url().'menus/list_menus/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$rowperpage.'/'.$rowno;
+        $config['base_url'] = base_url().'menus/list_menus/'.$key_search.'/'.$sort_by.'/'.$order_sort.'/'.$type_menu.'/'.$rowperpage.'/'.$rowno;
         $config['use_page_numbers'] = TRUE;
         $config['total_rows'] = $allcount;
         $config['per_page'] = $rowperpage;
@@ -77,6 +79,34 @@ class Menus extends CI_Controller {
         echo json_encode($data);
     }
 
+    public function update_sort()
+    {
+        $page_id_array = $this->input->post('page_id_array');
+        $type = $this->input->post('type');
+        $parent_id = $this->input->post('parent_id');
+        $action = $this->input->post('action');
+
+        if (empty($page_id_array) || $action != 'update') {
+            echo json_encode([
+                'error' => '1',
+                'message' => 'Invalid request'
+            ]);
+            return;
+        }
+
+        for ($count = 0; $count < count($page_id_array); $count++) {
+            $sort = $count + 1;
+            $idMenu = $page_id_array[$count];
+
+            $this->Menu_model->update_sort($idMenu, $sort, $type, $parent_id);
+        }
+
+        echo json_encode([
+            'error' => '0',
+            'message' => 'Sorting updated successfully'
+        ]);
+    }
+
     public function create()
     {
         $data['title'] = 'Add Menu';
@@ -85,8 +115,7 @@ class Menus extends CI_Controller {
         $this->form_validation->set_rules('name', 'Name', 'required|is_unique[menus.name]', [
             'required' => 'Name harus diisi',
             'is_unique' => 'Name sudah digunakan'
-        ]);        
-        $this->form_validation->set_rules('sort_order', 'Sort', 'required', ['required' => 'Sort harus diisi']);
+        ]);
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('layouts/header');
@@ -94,12 +123,13 @@ class Menus extends CI_Controller {
             $this->load->view('menus/create', $data);
             $this->load->view('layouts/footer');
         } else {
+            $getSortOrder = $this->Menu_model->getSortOrder($this->input->post('parent_id') ?: null);
             $menu = [
                 'name' => $this->input->post('name'),
                 'url' => $this->input->post('url'),
                 'icon' => $this->input->post('icon'),
                 'parent_id' => $this->input->post('parent_id') ?: null,
-                'sort_order' => $this->input->post('sort_order') ?: 0,
+                'sort_order' => $getSortOrder
             ];
             $this->Menu_model->insert($menu);
             redirect('menus');
@@ -118,7 +148,6 @@ class Menus extends CI_Controller {
         $this->form_validation->set_rules('name', 'Name', 'required', [
             'required' => 'Name harus diisi'
         ]);
-        $this->form_validation->set_rules('sort_order', 'Sort', 'required', ['required' => 'Sort harus diisi']);
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('layouts/header', $data);
@@ -131,7 +160,6 @@ class Menus extends CI_Controller {
                 'url' => $this->input->post('url'),
                 'icon' => $this->input->post('icon'),
                 'parent_id' => $this->input->post('parent_id') ?: null,
-                'sort_order' => $this->input->post('sort_order') ?: 0,
             ];
             $this->Menu_model->update($id, $update);
             redirect('menus');
