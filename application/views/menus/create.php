@@ -44,12 +44,6 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Sort Order</label>
-                                <input type="number" name="sort_order" class="form-control" value="<?= set_value('sort_order', 0) ?>" required>
-                            </div>
-                        </div>
                         <div class="col-md-12" align="center">
                             <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
