@@ -7,7 +7,7 @@ class Catchup_schedules extends CI_Controller {
         if (!$this->session->userdata('user')) {
             redirect('auth');
         }
-        if (!has_permission('view_catchupselections')) {
+        if (!has_permission('view_catchupschedules')) {
             show_error('Anda tidak memiliki akses ke halaman ini', 403, 'Forbidden');
         }
         $this->load->config('secure_config');
