@@ -8,28 +8,64 @@ class Menu_model extends CI_Model {
         $this->load->database('default',true);
     }
 
-    public function getCountAll($key_search)
+    public function getCountAll($key_search, $type_menu)
     {
-        $this->db->select('menus.id');
+        $this->db->select('COUNT(menus.id) AS total', false);
         $this->db->from('menus');
-        if ($key_search!='null') {
+        $this->db->join('menus AS parent', 'parent.id = menus.parent_id', 'left');
+        if ($key_search != 'null') {
             $this->db->like('menus.name', $key_search);
         }
-        $query = $this->db->get();
-        return $query->num_rows();
+        if ($type_menu == 'parent') {
+            $this->db->where('menus.parent_id IS NULL', NULL, FALSE);
+            $this->db->order_by('CAST(menus.sort_order AS decimal) ASC', false);
+        } else {
+            $this->db->where('menus.parent_id IS NOT NULL', NULL, FALSE);
+            $this->db->order_by('CAST(menus.parent_id AS decimal) ASC', false);
+            $this->db->order_by('CAST(menus.sort_order AS decimal) ASC', false);
+        }
+        $result = $this->db->get()->row_array();
+
+        return (int) $result['total'];
     }
 
-    public function getDatas($key_search, $sort_by, $order_sort, $rowperpage, $rowno)
+    public function getDatas($key_search, $sort_by, $order_sort, $type_menu, $rowperpage, $rowno)
     {
-        $this->db->select('*');
+        $this->db->select('menus.*, parent.name AS parent_name');
         $this->db->from('menus');
-        if ($key_search!='null') {
+        $this->db->join('menus AS parent', 'parent.id = menus.parent_id', 'left');
+        if ($key_search != 'null') {
             $this->db->like('menus.name', $key_search);
         }
+        if ($type_menu == 'parent') {
+            $this->db->where('menus.parent_id IS NULL', NULL, FALSE);
+            $this->db->order_by('CAST(menus.sort_order AS decimal) ASC', false);
+        } else {
+            $this->db->where('menus.parent_id IS NOT NULL', NULL, FALSE);
+            $this->db->order_by('CAST(menus.parent_id AS decimal) ASC', false);
+            $this->db->order_by('CAST(menus.sort_order AS decimal) ASC', false);
+        }
         $this->db->order_by($sort_by, $order_sort);
-        $this->db->limit($rowperpage, $rowno);  
+        $this->db->limit($rowperpage, $rowno);
         $query = $this->db->get();
         return $query->result_array();
+    }
+
+    public function update_sort($idMenu, $sort, $type, $parent_id)
+    {
+        $this->db->where('id', $idMenu);
+
+        if ($type == 'child') {
+            $this->db->where('parent_id', $parent_id);
+        } else {
+            $this->db->where('parent_id IS NULL', NULL, FALSE);
+        }
+
+        $this->db->update('menus', [
+            'sort_order' => $sort
+        ]);
+
+        return $this->db->affected_rows();
     }
 
     public function get_parents($exclude_id = null)
@@ -39,6 +75,22 @@ class Menu_model extends CI_Model {
         }
         $this->db->where('parent_id IS NULL', null, false);
         return $this->db->get('menus')->result();
+    }
+
+    public function getSortOrder($parent_id='')
+    {
+        $this->db->select('sort_order');
+        $this->db->from('menus');
+        if (empty($parent_id)) {
+            $this->db->where('parent_id IS NULL', NULL, FALSE);
+        } else {
+            $this->db->where('parent_id', $parent_id);
+        }
+        $this->db->order_by('CAST(sort_order AS decimal) DESC', false);
+        $this->db->limit(1);
+        $query = $this->db->get();
+        $last_sort = $query->row()->sort_order;
+        return $last_sort + 1;
     }
 
     public function insert($data)

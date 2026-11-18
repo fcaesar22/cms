@@ -93,6 +93,7 @@
         <script src="<?=base_url()?>assets/video-js/ie8/1.1.2/videojs-ie8.min.js"></script>
         <script src="<?=base_url()?>assets/video-js/video.js">"></script>
         <script src="<?=base_url()?>assets/js/jquery.minicolors.min.js"></script>
+        <script src="<?=base_url()?>assets/js/jquery.tabletojson.min.js"></script>
         <script src="<?=base_url()?>assets/js/app.min.js"></script>
         <script type="text/javascript">
           	$(document).ready(function(){

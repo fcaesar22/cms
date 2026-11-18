@@ -8,6 +8,7 @@ foreach ($permissions as $perm) {
     if (!isset($grouped[$parent])) {
         $grouped[$parent] = [];
     }
+    
     if (!isset($grouped[$parent][$child])) {
         $grouped[$parent][$child] = [];
     }

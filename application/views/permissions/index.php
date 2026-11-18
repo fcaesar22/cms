@@ -77,88 +77,86 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('#rowselect').select2()
         var sort_by = $('#sort_table').val()
         var order_sort = $('#order_table').val()
         var key_search = $('#searchinputactive').val()
-        if (key_search=='') {
+        if (key_search == '') {
             key_search = null
         }
         var rowperpage = $('#rowselect').val()
-        loadPagination(key_search,sort_by,order_sort,rowperpage,0);
+        loadPagination(key_search, sort_by, order_sort, rowperpage, 0)
     })
 
-    $(document).on("change","#rowselect",function (e) {
+    $(document).on("change", "#rowselect", function (e) {
         var checkpage = $('.pagination .active span').text()
-        // var pageno = parseInt(checkpage.replace('(current)(current)',''))
         var pageno = 0        
         var sort_by = $('#sort_table').val()
         var order_sort = $('#order_table').val()
         var key_search = $('#searchinputactive').val()
-        if (key_search=='') {
+        if (key_search == '') {
             key_search = null
         }
         var rowperpage = $('#rowselect').val()
-        loadPagination(key_search,sort_by,order_sort,rowperpage,pageno);
-    });
+        loadPagination(key_search, sort_by, order_sort, rowperpage, pageno)
+    })
 
-    $("#searchbuttonactive").click(function(){
-        var search =  $("#searchinputactive").val();
+    $("#searchbuttonactive").click(function () {
+        var search =  $("#searchinputactive").val()
         var length = search.length
         if (length < 4) {
-            $("#wardingsearchactive").css("display", "block");
+            $("#wardingsearchactive").css("display", "block")
             setTimeout(function () {
-                $('#wardingsearchactive').css("display", "none");
+                $('#wardingsearchactive').css("display", "none")
             }, 5000)
         } else {
             var sort_by = $('#sort_table').val()
             var order_sort = $('#order_table').val()
             var rowperpage = $('#rowselect').val()
-            loadPagination(search,sort_by,order_sort,rowperpage,0);
+            loadPagination(search, sort_by, order_sort, rowperpage, 0)
         }
-    });
+    })
 
-    // Detect pagination click
-    $('#pagination').on('click','a',function(e){
-        e.preventDefault(); 
-        var pageno = $(this).attr('data-ci-pagination-page');
+    $('#pagination').on('click', 'a', function (e) {
+        e.preventDefault()
+        var pageno = $(this).attr('data-ci-pagination-page')
         var sort_by = $('#sort_table').val()
         var order_sort = $('#order_table').val()
         var key_search = $('#searchinputactive').val()
-        if (key_search=='') {
+        if (key_search == '') {
             key_search = null
         }
         var rowperpage = $('#rowselect').val()
-        loadPagination(key_search,sort_by,order_sort,rowperpage,pageno);
-    });
+        loadPagination(key_search, sort_by, order_sort, rowperpage, pageno)
+    })
 
-    $('#pagination').on('click','.page-link',function(e){
-        e.preventDefault(); 
+    $('#pagination').on('click', '.page-link', function (e) {
+        e.preventDefault()
         var pageno = e.currentTarget.firstElementChild.attributes[1].nodeValue
         var sort_by = $('#sort_table').val()
         var order_sort = $('#order_table').val()
         var key_search = $('#searchinputactive').val()
-        if (key_search=='') {
+        if (key_search == '') {
             key_search = null
         }
         var rowperpage = $('#rowselect').val()
-        loadPagination(key_search,sort_by,order_sort,rowperpage,pageno);
-    });
+        loadPagination(key_search, sort_by, order_sort, rowperpage, pageno)
+    })
 
-    function loadPagination(key_search,sort_by,order_sort,rowperpage,pageno){
+    function loadPagination(key_search, sort_by, order_sort, rowperpage, pageno) {
         $.ajax({
             url: '<?=base_url()?>permissions/list_permissions/'+key_search+'/'+sort_by+'/'+order_sort+'/'+rowperpage+'/'+pageno,
             type: 'get',
             dataType: 'json',
-            success: function(response){
-                var order_sort = response.order;
-                var x = response.x;
-                var y = response.y;
-                var z = response.z;
-                var show = 'Showing '+x+' to '+y+' of '+z+' entries';
-                $('#data-table_info').html(show);
-                if (response.pagination=="") {
+            success: function (response) {
+                var order_sort = response.order
+                var x = response.x
+                var y = response.y
+                var z = response.z
+                var show = 'Showing '+x+' to '+y+' of '+z+' entries'
+                $('#data-table_info').html(show)
+                if (response.pagination == "") {
                     var page1 = `<div class="pagging text-center">
                                     <nav>
                                         <ul class="pagination justify-content-center">
@@ -168,30 +166,29 @@
                                         </ul>
                                     </nav>
                                 </div>`
-                    $('#pagination').html(page1);
+                    $('#pagination').html(page1)
                 } else {
-                    $('#pagination').html(response.pagination);
+                    $('#pagination').html(response.pagination)
                 }
-                createTable(response.result,response.row);
+                createTable(response.result, response.row)
             }
-        });
+        })
     }
 
-    function createTable(result,sno){
-        $('#mytable1 tbody').empty();
+    function createTable(result, sno) {
+        $('#mytable1 tbody').empty()
 
-        if (result.length > 0)
-        {
-            sno = Number(sno);
-            for(index in result){
-                var id = result[index].id;
-                var name = result[index].name;
-                sno+=1;
+        if (result.length > 0) {
+            sno = Number(sno)
+            for (index in result) {
+                var id = result[index].id
+                var name = result[index].name
+                sno+=1
                 var base_url ='<?php echo base_url()?>'
 
-                var tr = "<tr id='"+id+"'>";
-                tr += "<td>"+ sno +"</td>";
-                tr += "<td>"+ name +"</td>";
+                var tr = "<tr id='"+id+"'>"
+                tr += "<td>"+ sno +"</td>"
+                tr += "<td>"+ name +"</td>"
                 tr += `<td>
                             <?php if (has_permission('edit_permissions')): ?>
                                 <a href="<?= base_url('permissions/edit/${id}') ?>" class="btn btn-outline-warning btn--icon-text"><i class="zmdi zmdi-edit zmdi-hc-fw"></i>Edit</a>
@@ -200,19 +197,17 @@
                                 <a href="#!" class="btn btn-outline-danger btn--icon-text" onclick="deleteConfirm('${base_url}permissions/delete/${id}')"><i class="zmdi zmdi-delete zmdi-hc-fw"></i>Delete</a>
                             <?php endif; ?>
                         </td>`
-                tr += "</tr>";
-                $('#mytable1 tbody').append(tr);
+                tr += "</tr>"
+                $('#mytable1 tbody').append(tr)
             }
-        }
-        else
-        {
+        } else {
             var tr = `<tr class="odd"><td valign="top" colspan="3" class="dataTables_empty">No matching records found</td></tr>`
-            $('#mytable1 tbody').append(tr);
+            $('#mytable1 tbody').append(tr)
         }
     }
 
-    function deleteConfirm(url){
-        $('#btn-confirmactive').attr('href', url);
-        $('#deleteModal').modal();
+    function deleteConfirm(url) {
+        $('#btn-confirmactive').attr('href', url)
+        $('#deleteModal').modal()
     }
 </script>

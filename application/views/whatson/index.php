@@ -67,10 +67,10 @@
                                     <thead>
                                         <tr>
                                             <th class="whid1">No.</th>
+                                            <th>Image</th>
                                             <th class="whtl1">Title</th>
                                             <th class="whds1">Description</th>
                                             <th>Category</th>
-                                            <th>Image</th>
                                             <th class="whbn1">Status Banner</th>
                                             <th class="whpin1">Pin Banner</th>
                                             <th>Action</th>
@@ -100,10 +100,10 @@
                                     <thead>
                                         <tr>
                                             <th class="whid2">No.</th>
+                                            <th>Image</th>
                                             <th class="whtl2">Title</th>
                                             <th class="whds2">Description</th>
                                             <th>Category</th>
-                                            <th>Image</th>
                                             <th class="whbn2">Status Banner</th>
                                             <th class="whpin2">Pin Banner</th>
                                             <th>Action</th>
@@ -514,10 +514,10 @@
 
                 var tr = "<tr id='"+id+"'>";
                 tr += "<td>"+ sno +"</td>";
+                tr += "<td>"+ htmlimage +"</td>";
                 tr += "<td>"+ title +"</td>";
                 tr += "<td class='descdiv'>" + displayText + "<span class='more-content'>" + moreContent + "</span>" + readMoreBtn + "</td>";
                 tr += "<td>"+ category +"</td>";
-                tr += "<td>"+ htmlimage +"</td>";
                 tr += "<td>"+ banner_status +"</td>";
                 tr += "<td>"+ banner_pin +"</td>";
                 tr += `<td>

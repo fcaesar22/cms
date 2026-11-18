@@ -54,7 +54,7 @@
 </section>
 
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('#role_id').select2()
     })
 </script>

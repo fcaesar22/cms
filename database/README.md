@@ -53,6 +53,17 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 041  | 041_create_category_catchup_table.sql                    | Membuat tabel `category_catchup`                        |
 | 042  | 042_create_model_tag_table.sql                           | Membuat tabel `model_tag`                               |
 | 043  | 043_create_tag_table.sql                                 | Membuat tabel `tag`                                     |
+| 044  | 044_create_category_tvshow_table.sql                     | Membuat tabel `category_tvshow`                         |
+| 045  | 045_create_top_tvshow_table.sql                          | Membuat tabel `top_tvshow`                              |
+| 046  | 046_create_tv_schedule_table.sql                         | Membuat tabel `tv_schedule`                             |
+| 047  | 047_create_section_table.sql                             | Membuat tabel `section`                                 |
+| 048  | 048_create_section_for_mobile_table.sql                  | Membuat tabel `section_for_mobile`                      |
+| 049  | 049_create_notifications_table.sql                       | Membuat tabel `notifications`                           |
+| 050  | 050_create_firebase_notifications_table.sql              | Membuat tabel `firebase_notifications`                  |
+| 051  | 051_create_stb_table.sql                                 | Membuat tabel `stb`                                     |
+| 052  | 052_create_stb_activity_logs_table.sql                   | Membuat tabel `stb_activity_logs`                       |
+| 053  | 053_create_tab_popup_location_table.sql                  | Membuat tabel `tab_popup_location`                      |
+| 054  | 054_create_tab_popup_table.sql                           | Membuat tabel `tab_popup`                               |
 
 ---
 
