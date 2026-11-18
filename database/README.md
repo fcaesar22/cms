@@ -64,6 +64,8 @@ Semua file SQL harus dijalankan **berdasarkan urutan nomor prefix** (001, 002, d
 | 052  | 052_create_stb_activity_logs_table.sql                   | Membuat tabel `stb_activity_logs`                       |
 | 053  | 053_create_tab_popup_location_table.sql                  | Membuat tabel `tab_popup_location`                      |
 | 054  | 054_create_tab_popup_table.sql                           | Membuat tabel `tab_popup`                               |
+| 055  | 055_create_list_payment_table.sql                        | Membuat tabel `list_payment`                            |
+| 056  | 056_create_orders_table.sql                              | Membuat tabel `orders`                                  |
 
 ---
 
